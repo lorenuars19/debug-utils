@@ -1,3 +1,4 @@
+`curl https://raw.githubusercontent.com/lorenuars19/debug-utils/main/debug_utils.h -o debug_utils.h`
 # Debug-Utils
 Header file containing useful debug macros I use all the time
 
