@@ -6,7 +6,7 @@
 /*   By: lorenuar <lorenuar@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/10 18:21:34 by lorenuar          #+#    #+#             */
-/*   Updated: 2021/03/11 16:05:45 by lorenuar         ###   ########.fr       */
+/*   Updated: 2021/03/11 18:08:01 by lorenuar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,33 +14,46 @@
 # define DEBUG_UTILS_H
 
 # include <stdio.h>
+# include <stdint.h>
 
-# ifndef BREAK_PAUSE
-#  define BREAK_PAUSE 1
+# ifndef _BREAK_PAUSE
+#  define _BREAK_PAUSE 1
 # endif
 
-# define _BR_NOPAUSE printf("[%d]:%s:%s()\n", __LINE__, __FILE__, __FUNCTION__);
-# define _BR_PAUSE printf("[%d]:%s:%s()", __LINE__, __FILE__, __FUNCTION__); getchar();
+# ifndef _NEWLINE
+#  define _NEWLINE 1
+# endif
 
-# if BREAK_PAUSE == 0
-#  define BR _BR_NOPAUSE
+# if _NEWLINE == 1
+#  define _DE_NL "\n"
+#  define _BR_NL "\t"
 # else
-# define BR _BR_PAUSE
-#endif
+#  define _DE_NL "\t"
+#  define _BR_NL " "
+# endif
 
-# define BR_(var) _Generic((var),	\
-	int		:  printf("[%d]:%s:%s() :" #var " : %d\n", __LINE__, __FILE__, __FUNCTION__, (int)var),	\
-	long	:  printf("[%d]:%s:%s() :" #var " : %ld\n", __LINE__, __FILE__, __FUNCTION__, (long)var),	\
-	double	:  printf("[%d]:%s:%s() :" #var " : %f\n", __LINE__, __FILE__, __FUNCTION__, (double)var),	\
-	float	:  printf("[%d]:%s:%s() :" #var " : %f\n",  __LINE__, __FILE__, __FUNCTION__, (float)var),	\
-	default	 : printf("[%d]:%s:%s() :" #var " : %p Other type\n", __LINE__, __FILE__, __FUNCTION__, (void)var))		 		\
+# define _BR(NEWLINE) printf("#>[l %d] %s:%s()<#" _BR_NL, __LINE__, __FILE__, __FUNCTION__);
 
-# define D_INT(var) printf(#var " : %d\n", var);
-# define D_LINT(var) printf(#var " : %ld\n", var);
-# define D_DOUB(var) printf(#var " : %f\n", var);
+# if _BREAK_PAUSE == 1
+#  define BR _BR(0) getchar();
+# else
+#  define BR _BR(1);
+# endif
 
-# define D_STR(var) printf(#var " : '%s'\n", var);
-# define D_PTR(var) printf(#var " : <%p>\n", var);
+# define DE(var) _Generic(((var)+0),	\
+	int		: printf("[l %d] %s:%s() | " #var " = %d"  _DE_NL , __LINE__, __FILE__, __FUNCTION__, var),	\
+	long	: printf("[l %d] %s:%s() | " #var " = %ld" _DE_NL , __LINE__, __FILE__, __FUNCTION__, var),	\
+	double	: printf("[l %d] %s:%s() | " #var " = %f" _DE_NL , __LINE__, __FILE__, __FUNCTION__, var),	\
+	float	: printf("[l %d] %s:%s() | " #var " = %f" _DE_NL , __LINE__, __FILE__, __FUNCTION__, var),	\
+	size_t	: printf("[l %d] %s:%s() | " #var " = %lu" _DE_NL , __LINE__, __FILE__, __FUNCTION__, var),	\
+	char*	: printf("[l %d] %s:%s() | " #var " = \"%s\"" _DE_NL , __LINE__, __FILE__, __FUNCTION__, var),	\
+	default	: printf("[l %d] %s:%s() | " #var " = %p" _DE_NL , __LINE__, __FILE__, __FUNCTION__, var))
+
+# define D_INT(var) printf("[l %d] %s:%s() | " #var " : %d" _DE_NL, __LINE__, __FILE__, __FUNCTION__, var);
+# define D_LINT(var) printf("[l %d] %s:%s() | " #var " : %ld" _DE_NL, __LINE__, __FILE__, __FUNCTION__, var);
+# define D_DOUB(var) printf("[l %d] %s:%s() | " #var " : %f" _DE_NL, __LINE__, __FILE__, __FUNCTION__, var);
+# define D_STR(var) printf("[l %d] %s:%s() | " #var " : \"%s\"" _DE_NL, __LINE__, __FILE__, __FUNCTION__, var);
+# define D_PTR(var) printf"[l %d] %s:%s() | " #var " : <%p>" _DE_NL, __LINE__, __FILE__, __FUNCTION__, var);
 
 # define D_STR_DETAILS(str) print_str_details(strlen(str), str, #str)
 
