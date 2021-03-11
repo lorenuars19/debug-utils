@@ -1,0 +1,9 @@
+
+# This file forces github.com to display the repo in a certain way.
+# thus things are aligned and displayed as they were intended.
+
+root = true
+
+[*]
+indent_style = tab
+indent_size = 4

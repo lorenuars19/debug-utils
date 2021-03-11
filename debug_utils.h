@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   debug_utils.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lorenuar <lorenuar@student.s19.be>         +#+  +:+       +#+        */
+/*   By: jjosephi <jjosephi@student.42.us.org>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/10 18:21:34 by lorenuar          #+#    #+#             */
-/*   Updated: 2021/03/10 18:34:17 by lorenuar         ###   ########.fr       */
+/*   Updated: 2021/03/10 23:07:46 by jjosephi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,19 @@
 
 # define D_INT(var) printf(#var " : %d\n", var);
 # define D_LINT(var) printf(#var " : %ld\n", var);
+# define D_DOUB(var) printf(#var " : %f\n", var);
 
 # define D_STR(var) printf(#var " : '%s'\n", var);
 # define D_PTR(var) printf(#var " : <%p>\n", var);
 
 #define D_STR_DETAILS(str) print_str_details(strlen(str), str, #str)
+
+# define DEBUG(var) _Generic((var),	\
+	int		:  printf(#var " : %d\n", (int)var),	\
+	long	:  printf(#var " : %ld\n",(long)var),	\
+	double	:  printf(#var " : %f\n", (double)var),	\
+	float	:  printf(#var " : %f\n", (float)var),	\
+	default	 : printf(#var " : Hi"))		 		\
 
 static inline void	print_str_details(size_t len, char *str, const char *name)
 {
