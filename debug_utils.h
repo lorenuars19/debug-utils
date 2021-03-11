@@ -6,7 +6,7 @@
 /*   By: lorenuar <lorenuar@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/10 18:21:34 by lorenuar          #+#    #+#             */
-/*   Updated: 2021/03/10 18:34:17 by lorenuar         ###   ########.fr       */
+/*   Updated: 2021/03/11 15:59:37 by lorenuar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@
 # define D_STR(var) printf(#var " : '%s'\n", var);
 # define D_PTR(var) printf(#var " : <%p>\n", var);
 
-#define D_STR_DETAILS(str) print_str_details(strlen(str), str, #str)
+# define D_STR_DETAILS(str) print_str_details(strlen(str), str, #str)
 
 static inline void	print_str_details(size_t len, char *str, const char *name)
 {
