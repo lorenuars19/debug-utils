@@ -6,7 +6,7 @@
 /*   By: lorenuar <lorenuar@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/10 18:21:34 by lorenuar          #+#    #+#             */
-/*   Updated: 2021/03/11 18:08:01 by lorenuar         ###   ########.fr       */
+/*   Updated: 2021/03/11 18:21:49 by lorenuar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@
 #  define _BR_NL " "
 # endif
 
-# define _BR(NEWLINE) printf("#>[l %d] %s:%s()<#" _BR_NL, __LINE__, __FILE__, __FUNCTION__);
+# define _BR(NEWLINE) printf("#<[l %d] %s:%s()>#" _BR_NL, __LINE__, __FILE__, __FUNCTION__);
 
 # if _BREAK_PAUSE == 1
 #  define BR _BR(0) getchar();
