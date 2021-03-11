@@ -20,4 +20,4 @@ To debug memory manipulation with strings
 Feel free to make a pull request to add your own macros
 
 # Thanks
-Thanks to Jjosephi, for teaching me the existence of `_Generic()`
+Thanks to [Jjosephi](https://github.com/FlavorlessQuark), for teaching me the existence of `_Generic()`
