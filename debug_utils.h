@@ -16,8 +16,8 @@
 # include <stdio.h>
 # include <stdint.h>
 
-# ifndef _BREAK_PAUSE
-#  define _BREAK_PAUSE 1
+# ifndef BREAK_PAUSE
+#  define BREAK_PAUSE 1
 # endif
 
 # ifndef _NEWLINE
@@ -34,7 +34,7 @@
 
 # define _BR(NEWLINE) printf("#<[l %d] %s:%s()>#" _BR_NL, __LINE__, __FILE__, __FUNCTION__);
 
-# if _BREAK_PAUSE == 1
+# if BREAK_PAUSE == 1
 #  define BR _BR(0) getchar();
 # else
 #  define BR _BR(1);
