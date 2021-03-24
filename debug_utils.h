@@ -53,7 +53,7 @@
 # define D_LINT(var) printf("[l %d] %s:%s() | " #var " : %ld" _DE_NL, __LINE__, __FILE__, __FUNCTION__, var);
 # define D_DOUB(var) printf("[l %d] %s:%s() | " #var " : %f" _DE_NL, __LINE__, __FILE__, __FUNCTION__, var);
 # define D_STR(var) printf("[l %d] %s:%s() | " #var " : \"%s\"" _DE_NL, __LINE__, __FILE__, __FUNCTION__, var);
-# define D_PTR(var) printf"[l %d] %s:%s() | " #var " : <%p>" _DE_NL, __LINE__, __FILE__, __FUNCTION__, var);
+# define D_PTR(var) printf("[l %d] %s:%s() | " #var " : <%p>" _DE_NL, __LINE__, __FILE__, __FUNCTION__, var);
 
 # define D_STR_DETAILS(str) print_str_details(strlen(str), str, #str)
 
