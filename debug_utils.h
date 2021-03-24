@@ -49,11 +49,11 @@
 	char*	: printf("[l %d] %s:%s() | " #var " = \"%s\"" _DE_NL , __LINE__, __FILE__, __FUNCTION__, var),	\
 	default	: printf("[l %d] %s:%s() | " #var " = %p" _DE_NL , __LINE__, __FILE__, __FUNCTION__, var))
 
-# define D_INT(var) printf("[l %d] %s:%s() | " #var " : %d" _DE_NL, __LINE__, __FILE__, __FUNCTION__, var);
-# define D_LINT(var) printf("[l %d] %s:%s() | " #var " : %ld" _DE_NL, __LINE__, __FILE__, __FUNCTION__, var);
-# define D_DOUB(var) printf("[l %d] %s:%s() | " #var " : %f" _DE_NL, __LINE__, __FILE__, __FUNCTION__, var);
-# define D_STR(var) printf("[l %d] %s:%s() | " #var " : \"%s\"" _DE_NL, __LINE__, __FILE__, __FUNCTION__, var);
-# define D_PTR(var) printf("[l %d] %s:%s() | " #var " : <%p>" _DE_NL, __LINE__, __FILE__, __FUNCTION__, var);
+# define D_INT(var)		printf("[%d] %-15s | %-6s : %-5d" _DE_NL, __LINE__, __FUNCTION__, #var , var);
+# define D_LINT(var)	printf("[%d] %-15s | %-6s : %-5ld" _DE_NL, __LINE__, __FUNCTION__, #var, var);
+# define D_DOUB(var)	printf("[%d] %-15s | %-6s : %-5f" _DE_NL, __LINE__, __FUNCTION__, #var, var);
+# define D_STR(var)		printf("[%d] %-15s | %-6s : \"%-5s\"" _DE_NL, __LINE__, __FUNCTION__, #var, var);
+# define D_PTR(var)		printf("[%d] %-15s | %-6s : <%-5p>" _DE_NL, __LINE__, __FUNCTION__, #var, var);
 
 # define D_STR_DETAILS(str) print_str_details(strlen(str), str, #str)
 
