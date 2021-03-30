@@ -5,6 +5,7 @@ Header file containing useful debug macros I use all the time
 # Macros
 Automatic Macros
 - `BR` : BreakPoint : will pause the execution using libc `getchar()` so you can just press enter in the terminal to continue your program, you can `-D BREAK_PAUSE=0` so it does not pause your program
+- `BM(msg)` : Same as `BR` but with a custom message
 - `DE(var)` : Will try to detect variable type, and print it accordingly, using `_Generic()`
 
 Static typed (in case `_Generic()` fails)
@@ -20,4 +21,4 @@ To debug memory manipulation with strings
 Feel free to make a pull request to add your own macros
 
 # Thanks
-Thanks to Jjosephi, for teaching me the existence of `_Generic()`
+Thanks to [Jjosephi](https://github.com/FlavorlessQuark), for teaching me the existence of `_Generic()`

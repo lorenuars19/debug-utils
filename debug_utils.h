@@ -6,7 +6,7 @@
 /*   By: lorenuar <lorenuar@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/10 18:21:34 by lorenuar          #+#    #+#             */
-/*   Updated: 2021/03/29 18:45:34 by lorenuar         ###   ########.fr       */
+/*   Updated: 2021/03/30 06:07:04 by lorenuar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 # include <stdio.h>
 # include <stdint.h>
 
-# ifndef _BREAK_PAUSE
-#  define _BREAK_PAUSE 1
+# ifndef BREAK_PAUSE
+#  define BREAK_PAUSE 1
 # endif
 
 # ifndef _NEWLINE
@@ -35,7 +35,7 @@
 # define _BR(NEWLINE) printf("< %s:%d in %s() >%s", __FILE__, __LINE__, __FUNCTION__, (NEWLINE == 1) ? ("\n") : (" "));
 # define _BR_MSG(NEWLINE, msg) printf("{ " #msg " } - "); _BR(NEWLINE);
 
-# if _BREAK_PAUSE == 1
+# if BREAK_PAUSE == 1
 #  define BR _BR(0) getchar();
 # else
 #  define BR _BR(1);;
@@ -58,11 +58,11 @@
 	char*	: printf(" |" #var " = " "\"%s\"" _DE_NL , var),	\
 	default	: printf(" |" #var " = " "%p" _DE_NL , var));
 
-# define D_INT(var) printf("<%s:%d in %s()> " #var " : %d" _DE_NL, __FILE__, __LINE__, __FUNCTION__, var);
-# define D_LINT(var) printf("<%s:%d in %s()> " #var " : %ld" _DE_NL, __FILE__, __LINE__, __FUNCTION__, var);
-# define D_DOUB(var) printf("<%s:%d in %s()> " #var " : %f" _DE_NL, __FILE__, __LINE__, __FUNCTION__, var);
-# define D_STR(var) printf("<%s:%d in %s()> " #var " : \"%s\"" _DE_NL, __FILE__, __LINE__, __FUNCTION__, var);
-# define D_PTR(var) printf("<%s:%d in %s()> " #var " : <%p>" _DE_NL, __FILE__, __LINE__, __FUNCTION__, var);
+# define D_INT(var) printf("< %s:%d in %s() > " #var " : %d" _DE_NL, __FILE__, __LINE__, __FUNCTION__, var);
+# define D_LINT(var) printf("< %s:%d in %s() > " #var " : %ld" _DE_NL, __FILE__, __LINE__, __FUNCTION__, var);
+# define D_DOUB(var) printf("< %s:%d in %s() > " #var " : %f" _DE_NL, __FILE__, __LINE__, __FUNCTION__, var);
+# define D_STR(var) printf("< %s:%d in %s() > " #var " : \"%s\"" _DE_NL, __FILE__, __LINE__, __FUNCTION__, var);
+# define D_PTR(var) printf("< %s:%d in %s() > " #var " : <%p>" _DE_NL, __FILE__, __LINE__, __FUNCTION__, var);
 
 # define D_STR_DETAILS(str) print_str_details(strlen(str), str, #str)
 
