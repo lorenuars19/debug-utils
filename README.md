@@ -1,13 +1,13 @@
 `curl https://raw.githubusercontent.com/lorenuars19/debug-utils/main/debug_utils.h -o debug_utils.h`
-Add to your global include folder, so you can include with `#include <debug_utils.h>` <br>
-`sudo cp debug_utils.h /usr/include/debug_utils.h`
+to add to your global include folder, so you can include with `#include <debug_utils.h>` run this `sudo cp debug_utils.h /usr/include/debug_utils.h`
 # Debug-Utils
 Header file containing useful debug macros I use all the time
 
 # Parameters
-- `BREAK_PAUSE` (default : 1) compile with `-D BREAK_PAUSE=` set `1|0` : 1 will pause, 0 will not pause
-- `_NEWLINE` (default : 1) compile with `-D _NEWLINE=` set `1|0` : 1 will print newlines, 0 will give more compact output
-- `_FD` (default : 2) compile with `-D _FD=` sets the File Descriptor on which you want to output
+- `BREAK_PAUSE` (default : 1) compile with `-D BREAK_PAUSE=` set `1|0` : 1 will pause, 0 will not pause.
+- `_NEWLINE` (default : 1) compile with `-D _NEWLINE=` set `1|0` : 1 will print newlines, 0 will give more compact output.
+- `_FD` (default : 2) compile with `-D _FD=` sets the File Descriptor on which you want to output.
+- `_NO_COLORS` compile with `-D _NO_COLORS` to remove all colors.
 
 # Macros
 Automatic Macros

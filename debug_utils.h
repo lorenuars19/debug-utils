@@ -6,7 +6,7 @@
 /*   By: lorenuar <lorenuar@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/10 18:21:34 by lorenuar          #+#    #+#             */
-/*   Updated: 2021/04/03 17:12:04 by lorenuar         ###   ########.fr       */
+/*   Updated: 2021/04/03 17:38:29 by lorenuar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,27 @@
 #  define _FD 2
 # endif
 
+# ifndef _NO_COLORS
+#  define _CL_BR_FADE "\033[37;2m"
+#  define _CL_BR "\033[38;1m"
+#  define _CL_MSG "\033[34;1m"
+#  define _CL_VAR "\033[36;1m"
+#  define _CL_RST "\033[0m"
+# else
+#  define _CL_BR_FADE ""
+#  define _CL_BR ""
+#  define _CL_MSG ""
+#  define _CL_VAR ""
+#  define _CL_RST ""
+# endif
+
 # define _print(fmt, ... ) dprintf( _FD, fmt, __VA_ARGS__ )
 
-# define _BR(NEWLINE) _print( "< %s:%d in %s() >%s", __FILE__, __LINE__, __FUNCTION__, (NEWLINE == 1) ? ("\n") : (" "))
-# define _BR_MSG(msg) _print( "{ %s } - ", #msg)
+# define _BR(NEWLINE) _print("%s< %s:%d in %s() >" _CL_RST "%s",((NEWLINE) ? (_CL_BR) : (_CL_BR_FADE)), __FILE__, __LINE__, __FUNCTION__, (NEWLINE == 1) ? ("\n") : (" "))
+# define _BR_MSG(msg) _print( _CL_MSG "{%s} " _CL_RST , #msg)
 
 # if BREAK_PAUSE == 1
-#  define BR _BR(0); getchar();
+#  define BR _BR(1); getchar();
 # else
 #  define BR _BR(1);
 # endif
@@ -54,13 +68,13 @@
 # endif
 
 # define _DE_AUTO(var) _Generic(((var)+0),	\
-	int		: _print( "|" #var " = " "%d" _DE_NL , var),		\
-	long	: _print( "|" #var " = " "%ld" _DE_NL , var),		\
-	double	: _print( "|" #var " = " "%f" _DE_NL , var),		\
-	float	: _print( "|" #var " = " "%f" _DE_NL , var),		\
-	size_t	: _print( "|" #var " = " "%lu" _DE_NL , var),		\
-	char*	: _print( "|" #var " = " "\"%s\"" _DE_NL , var),	\
-	default	: _print( "|" #var " = " "%p" _DE_NL , var))
+	int		: _print( _CL_VAR #var " = " "%d"     _CL_RST _DE_NL , var),		\
+	long	: _print( _CL_VAR #var " = " "%ld"    _CL_RST _DE_NL , var),		\
+	double	: _print( _CL_VAR #var " = " "%f"     _CL_RST _DE_NL , var),		\
+	float	: _print( _CL_VAR #var " = " "%f"     _CL_RST _DE_NL , var),		\
+	size_t	: _print( _CL_VAR #var " = " "%lu"    _CL_RST _DE_NL , var),		\
+	char*	: _print( _CL_VAR #var " = " "\"%s\"" _CL_RST _DE_NL , var),	\
+	default	: _print( _CL_VAR #var " = " "%p"     _CL_RST _DE_NL , var))
 
 # define DE(var) _BR(0); _DE_AUTO(var);
 
