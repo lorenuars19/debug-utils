@@ -6,7 +6,7 @@
 /*   By: lorenuar <lorenuar@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/10 18:21:34 by lorenuar          #+#    #+#             */
-/*   Updated: 2021/04/03 17:38:29 by lorenuar         ###   ########.fr       */
+/*   Updated: 2021/04/03 17:41:35 by lorenuar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,11 +68,11 @@
 # endif
 
 # define _DE_AUTO(var) _Generic(((var)+0),	\
-	int		: _print( _CL_VAR #var " = " "%d"     _CL_RST _DE_NL , var),		\
-	long	: _print( _CL_VAR #var " = " "%ld"    _CL_RST _DE_NL , var),		\
-	double	: _print( _CL_VAR #var " = " "%f"     _CL_RST _DE_NL , var),		\
-	float	: _print( _CL_VAR #var " = " "%f"     _CL_RST _DE_NL , var),		\
-	size_t	: _print( _CL_VAR #var " = " "%lu"    _CL_RST _DE_NL , var),		\
+	int		: _print( _CL_VAR #var " = " "%d"     _CL_RST _DE_NL , var),	\
+	long	: _print( _CL_VAR #var " = " "%ld"    _CL_RST _DE_NL , var),	\
+	double	: _print( _CL_VAR #var " = " "%f"     _CL_RST _DE_NL , var),	\
+	float	: _print( _CL_VAR #var " = " "%f"     _CL_RST _DE_NL , var),	\
+	size_t	: _print( _CL_VAR #var " = " "%lu"    _CL_RST _DE_NL , var),	\
 	char*	: _print( _CL_VAR #var " = " "\"%s\"" _CL_RST _DE_NL , var),	\
 	default	: _print( _CL_VAR #var " = " "%p"     _CL_RST _DE_NL , var))
 
