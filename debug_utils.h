@@ -6,7 +6,7 @@
 /*   By: lorenuar <lorenuar@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/10 18:21:34 by lorenuar          #+#    #+#             */
-/*   Updated: 2021/04/03 17:41:35 by lorenuar         ###   ########.fr       */
+/*   Updated: 2021/04/03 17:57:10 by lorenuar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@
 # ifndef _NO_COLORS
 #  define _CL_BR_FADE "\033[37;2m"
 #  define _CL_BR "\033[38;1m"
-#  define _CL_MSG "\033[34;1m"
+#  define _CL_MSG "\033[33;1m"
 #  define _CL_VAR "\033[36;1m"
 #  define _CL_RST "\033[0m"
 # else
