@@ -4,6 +4,11 @@ Add to your global include folder, so you can include with `#include <debug_util
 # Debug-Utils
 Header file containing useful debug macros I use all the time
 
+# Parameters
+- `BREAK_PAUSE` (default : 1) compile with `-D BREAK_PAUSE=` set `1|0` : 1 will pause, 0 will not pause
+- `_NEWLINE` (default : 1) compile with `-D _NEWLINE=` set `1|0` : 1 will print newlines, 0 will give more compact output
+- `_FD` (default : 2) compile with `-D _FD=` sets the File Descriptor on which you want to output
+
 # Macros
 Automatic Macros
 - `BR` : BreakPoint : will pause the execution using libc `getchar()` so you can just press enter in the terminal to continue your program, you can `-D BREAK_PAUSE=0` so it does not pause your program.

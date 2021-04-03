@@ -6,7 +6,7 @@
 /*   By: lorenuar <lorenuar@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/10 18:21:34 by lorenuar          #+#    #+#             */
-/*   Updated: 2021/04/01 23:45:26 by lorenuar         ###   ########.fr       */
+/*   Updated: 2021/04/03 17:12:04 by lorenuar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,70 +28,74 @@
 #  define _DE_NL "\n"
 #  define _BR_NL "\t"
 # else
-#  define _DE_NL "\t"
+#  define _DE_NL " "
 #  define _BR_NL " "
 # endif
 
-# define _BR(NEWLINE) printf("< %s:%d in %s() >%s", __FILE__, __LINE__, __FUNCTION__, (NEWLINE == 1) ? ("\n") : (" "));
-# define _BR_MSG(msg) printf("{ " #msg " } - ");
+# ifndef _FD
+#  define _FD 2
+# endif
+
+# define _print(fmt, ... ) dprintf( _FD, fmt, __VA_ARGS__ )
+
+# define _BR(NEWLINE) _print( "< %s:%d in %s() >%s", __FILE__, __LINE__, __FUNCTION__, (NEWLINE == 1) ? ("\n") : (" "))
+# define _BR_MSG(msg) _print( "{ %s } - ", #msg)
 
 # if BREAK_PAUSE == 1
-#  define BR _BR(0) getchar();
+#  define BR _BR(0); getchar();
 # else
-#  define BR _BR(1);;
+#  define BR _BR(1);
 # endif
 
 # if _BREAK_PAUSE == 1
-#  define BM(msg) _BR_MSG(msg) _BR(0); getchar();
+#  define BM(msg) _BR_MSG(msg); _BR(1); getchar();
 # else
-#  define BM(msg) _BR_MSG(msg) _BR(1);
+#  define BM(msg) _BR_MSG(msg); _BR(1);
 # endif
 
-#define _CONV(var)
-
 # define _DE_AUTO(var) _Generic(((var)+0),	\
-	int		: printf("|" #var " = " "%d" _DE_NL , var),		\
-	long	: printf("|" #var " = " "%ld" _DE_NL , var),	\
-	double	: printf("|" #var " = " "%f" _DE_NL , var),		\
-	float	: printf("|" #var " = " "%f" _DE_NL , var),		\
-	size_t	: printf("|" #var " = " "%lu" _DE_NL , var),	\
-	char*	: printf("|" #var " = " "\"%s\"" _DE_NL , var),	\
-	default	: printf("|" #var " = " "%p" _DE_NL , var));
+	int		: _print( "|" #var " = " "%d" _DE_NL , var),		\
+	long	: _print( "|" #var " = " "%ld" _DE_NL , var),		\
+	double	: _print( "|" #var " = " "%f" _DE_NL , var),		\
+	float	: _print( "|" #var " = " "%f" _DE_NL , var),		\
+	size_t	: _print( "|" #var " = " "%lu" _DE_NL , var),		\
+	char*	: _print( "|" #var " = " "\"%s\"" _DE_NL , var),	\
+	default	: _print( "|" #var " = " "%p" _DE_NL , var))
 
-# define DE(var) _BR(0) _DE_AUTO(var);
+# define DE(var) _BR(0); _DE_AUTO(var);
 
-# define DM(msg, var) _BR(0) _BR_MSG(msg) _DE_AUTO(var);
+# define DM(msg, var) _BR(0); _BR_MSG(msg); _DE_AUTO(var);
 
-# define D_INT(var) printf("< %s:%d in %s() > " #var " : %d" _DE_NL, __FILE__, __LINE__, __FUNCTION__, var);
-# define D_LINT(var) printf("< %s:%d in %s() > " #var " : %ld" _DE_NL, __FILE__, __LINE__, __FUNCTION__, var);
-# define D_DOUB(var) printf("< %s:%d in %s() > " #var " : %f" _DE_NL, __FILE__, __LINE__, __FUNCTION__, var);
-# define D_STR(var) printf("< %s:%d in %s() > " #var " : \"%s\"" _DE_NL, __FILE__, __LINE__, __FUNCTION__, var);
-# define D_PTR(var) printf("< %s:%d in %s() > " #var " : <%p>" _DE_NL, __FILE__, __LINE__, __FUNCTION__, var);
+# define D_INT(var) _print( "< %s:%d in %s() > " #var " : %d" _DE_NL, __FILE__, __LINE__, __FUNCTION__, var);
+# define D_LINT(var) _print( "< %s:%d in %s() > " #var " : %ld" _DE_NL, __FILE__, __LINE__, __FUNCTION__, var);
+# define D_DOUB(var) _print( "< %s:%d in %s() > " #var " : %f" _DE_NL, __FILE__, __LINE__, __FUNCTION__, var);
+# define D_STR(var) _print( "< %s:%d in %s() > " #var " : \"%s\"" _DE_NL, __FILE__, __LINE__, __FUNCTION__, var);
+# define D_PTR(var) _print( "< %s:%d in %s() > " #var " : <%p>" _DE_NL, __FILE__, __LINE__, __FUNCTION__, var);
 
-# define D_STR_DETAILS(str) print_str_details(strlen(str), str, #str)
+# define D_STR_DETAILS(str) print_str_details(strlen(str), str, #str);
 
 static inline void	print_str_details(size_t len, char *str, const char *name)
 {
 	len++;
-	printf("=*= START DETAILS[%s][%p](len %ld): \n[", name, str, len);
+	_print( "=*= START DETAILS[%s][%p](len %ld): \n[", name, str, len);
 	while (len > 0)
 	{
 		if (*str >= ' ' && *str < '~')
 		{
-			printf("%c", *str);
+			_print( "%c", *str);
 		}
 		else
 		{
-			printf("\\%d", *str);
+			_print( "\\%d", *str);
 		}
 		str++;
 		len--;
 		if (len > 0)
 		{
-			printf("|");
+			dprintf( _FD, "|");
 		}
 	}
-	printf("] END_DETAILS =*=\n");
+	dprintf( _FD, "] END_DETAILS =*=\n");
 }
 
 #endif
