@@ -29,5 +29,5 @@ To debug memory manipulation with strings
 Feel free to make a pull request to add your own macros.
 
 # Thanks
-Thanks to [Jjosephi](https://github.com/FlavorlessQuark), for teaching me the existence of `_Generic()`
-Thanks to [Mhadad](https://github.com/Matthew-Dreemurr), for fixes.
+- Thanks to [Jjosephi](https://github.com/FlavorlessQuark), for teaching me the existence of `_Generic()`
+- Thanks to [Mhadad](https://github.com/Matthew-Dreemurr), for fixes.
