@@ -6,15 +6,27 @@
 /*   By: lorenuar <lorenuar@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/10 18:21:34 by lorenuar          #+#    #+#             */
-/*   Updated: 2021/04/03 17:57:10 by lorenuar         ###   ########.fr       */
+/*   Updated: 2021/04/07 17:44:16 by lorenuar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+/*
+** V 2.2
+*/
 
 #ifndef DEBUG_UTILS_H
 # define DEBUG_UTILS_H
 
 # include <stdio.h>
 # include <stdint.h>
+
+# ifndef _VAR_WIDTH
+#  define _VAR_WIDTH 2
+# endif
+
+# ifndef _MSG_WIDTH
+#  define _MSG_WIDTH 2
+# endif
 
 # ifndef BREAK_PAUSE
 #  define BREAK_PAUSE 1
@@ -53,7 +65,7 @@
 # define _print(fmt, ... ) dprintf( _FD, fmt, __VA_ARGS__ )
 
 # define _BR(NEWLINE) _print("%s< %s:%d in %s() >" _CL_RST "%s",((NEWLINE) ? (_CL_BR) : (_CL_BR_FADE)), __FILE__, __LINE__, __FUNCTION__, (NEWLINE == 1) ? ("\n") : (" "))
-# define _BR_MSG(msg) _print( _CL_MSG "{%s} " _CL_RST , #msg)
+# define _BR_MSG(msg) _print( _CL_MSG "{%*s} " _CL_RST , _MSG_WIDTH,  #msg)
 
 # if BREAK_PAUSE == 1
 #  define BR _BR(1); getchar();
@@ -68,13 +80,13 @@
 # endif
 
 # define _DE_AUTO(var) _Generic(((var)+0),	\
-	int		: _print( _CL_VAR #var " = " "%d"     _CL_RST _DE_NL , var),	\
-	long	: _print( _CL_VAR #var " = " "%ld"    _CL_RST _DE_NL , var),	\
-	double	: _print( _CL_VAR #var " = " "%f"     _CL_RST _DE_NL , var),	\
-	float	: _print( _CL_VAR #var " = " "%f"     _CL_RST _DE_NL , var),	\
-	size_t	: _print( _CL_VAR #var " = " "%lu"    _CL_RST _DE_NL , var),	\
-	char*	: _print( _CL_VAR #var " = " "\"%s\"" _CL_RST _DE_NL , var),	\
-	default	: _print( _CL_VAR #var " = " "%p"     _CL_RST _DE_NL , var))
+	int		: _print( _CL_VAR #var " = " "%*d"     _CL_RST _DE_NL , _VAR_WIDTH ,var),	\
+	long	: _print( _CL_VAR #var " = " "%*ld"    _CL_RST _DE_NL , _VAR_WIDTH ,var),	\
+	double	: _print( _CL_VAR #var " = " "%*f"     _CL_RST _DE_NL , _VAR_WIDTH ,var),	\
+	float	: _print( _CL_VAR #var " = " "%*f"     _CL_RST _DE_NL , _VAR_WIDTH ,var),	\
+	size_t	: _print( _CL_VAR #var " = " "%*lu"    _CL_RST _DE_NL , _VAR_WIDTH ,var),	\
+	char*	: _print( _CL_VAR #var " = " "\"%*s\"" _CL_RST _DE_NL , _VAR_WIDTH ,var),	\
+	default	: _print( _CL_VAR #var " = " "%*p"     _CL_RST _DE_NL , _VAR_WIDTH ,var))
 
 # define DE(var) _BR(0); _DE_AUTO(var);
 

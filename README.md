@@ -9,6 +9,8 @@ Header file containing useful debug macros I use all the time
 - `_NEWLINE` (default : 1) compile with `-D _NEWLINE=` set `1|0` : 1 will print newlines, 0 will give more compact output.
 - `_FD` (default : 2) compile with `-D _FD=` sets the File Descriptor on which you want to output.
 - `_NO_COLORS` compile with `-D _NO_COLORS` to remove all colors.
+- `_VAR_WIDTH` (default : 2) compile with `-D _VAR_WIDTH=` to set the field width of printf for variables
+- `_MSG_WIDTH` (default : 2) compile with ``-D _MSG_WIDTH=` to set the field width of printf for messages
 
 # Macros
 Automatic Macros
