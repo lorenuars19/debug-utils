@@ -100,6 +100,9 @@
 
 # define D_STR_DETAILS(str) print_str_details(strlen(str), str, #str);
 
+# define D_STR_DETAILS_LEN(str, len) print_str_details(len, str, #str);
+
+
 static inline void	print_str_details(size_t len, char *str, const char *name)
 {
 	len++;
