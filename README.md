@@ -27,6 +27,7 @@ Static typed (in case `_Generic()` fails)
 
 To debug memory manipulation with strings
 - `D_STR_DETAILS(str)` : Prints a string in details, printing control chars by their numeric value in the ascii table.
+- `D_STR_DETAILS_LEN(str, len)` : Prints a string in details forcing the len, printing control chars by their numeric value in the ascii table.
 
 # Contributing
 Feel free to make a pull request to add your own macros.
