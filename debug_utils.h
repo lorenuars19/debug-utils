@@ -98,15 +98,14 @@
 # define D_STR(var) _print( "< %s:%d in %s() > " #var " : \"%s\"" _DE_NL, __FILE__, __LINE__, __FUNCTION__, var);
 # define D_PTR(var) _print( "< %s:%d in %s() > " #var " : <%p>" _DE_NL, __FILE__, __LINE__, __FUNCTION__, var);
 
-# define D_STR_DETAILS(str) print_str_details(strlen(str), str, #str);
+# define D_STR_DETAILS(str) _BR(0) print_str_details(strlen(str), str, #str);
 
-# define D_STR_DETAILS_LEN(str, len) print_str_details(len, str, #str);
-
+# define D_STR_DETAILS_LEN(str, len) _BR(0) print_str_details(len, str, #str);
 
 static inline void	print_str_details(size_t len, char *str, const char *name)
 {
 	len++;
-	_print( "=*= START DETAILS[%s][%p](len %ld): \n[", name, str, len);
+	_print( "=*= str_details : %s [%p](len %ld): \n[", name, str, len);
 	while (len > 0)
 	{
 		if (*str >= ' ' && *str < '~')
@@ -124,7 +123,7 @@ static inline void	print_str_details(size_t len, char *str, const char *name)
 			dprintf( _FD, "|");
 		}
 	}
-	dprintf( _FD, "] END_DETAILS =*=\n");
+	dprintf( _FD, "] END =*=\n");
 }
 
 #endif
