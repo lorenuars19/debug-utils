@@ -6,7 +6,7 @@
 /*   By: lorenuar <lorenuar@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/10 18:21:34 by lorenuar          #+#    #+#             */
-/*   Updated: 2021/04/28 17:26:45 by lorenuar         ###   ########.fr       */
+/*   Updated: 2021/05/03 23:31:10 by lorenuar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 
 # include <stdio.h>
 # include <stdint.h>
+# include <string.h>
 
 # ifndef _VAR_WIDTH
 #  define _VAR_WIDTH 2
