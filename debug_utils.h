@@ -6,7 +6,7 @@
 /*   By: lorenuar <lorenuar@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/10 18:21:34 by lorenuar          #+#    #+#             */
-/*   Updated: 2021/05/03 23:31:10 by lorenuar         ###   ########.fr       */
+/*   Updated: 2021/05/04 23:57:33 by lorenuar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,11 +93,11 @@
 
 # define DM(msg, var) _BR(0); _BR_MSG(msg); _DE_AUTO(var);
 
-# define D_INT(var) _print( "< %s:%d in %s() > " #var " : %d" _DE_NL, __FILE__, __LINE__, __FUNCTION__, var);
-# define D_LINT(var) _print( "< %s:%d in %s() > " #var " : %ld" _DE_NL, __FILE__, __LINE__, __FUNCTION__, var);
-# define D_DOUB(var) _print( "< %s:%d in %s() > " #var " : %f" _DE_NL, __FILE__, __LINE__, __FUNCTION__, var);
-# define D_STR(var) _print( "< %s:%d in %s() > " #var " : \"%s\"" _DE_NL, __FILE__, __LINE__, __FUNCTION__, var);
-# define D_PTR(var) _print( "< %s:%d in %s() > " #var " : <%p>" _DE_NL, __FILE__, __LINE__, __FUNCTION__, var);
+# define D_INT(var)  _BR(0); _print(_CL_VAR  #var " : %d"     _DE_NL , var);
+# define D_LINT(var) _BR(0); _print( _CL_VAR #var " : %ld"    _DE_NL , var);
+# define D_DOUB(var) _BR(0); _print(_CL_VAR  #var " : %f"     _DE_NL , var);
+# define D_STR(var)  _BR(0); _print(_CL_VAR  #var " : \"%s\"" _DE_NL , var);
+# define D_PTR(var)  _BR(0); _print(_CL_VAR  #var " : <%p>"   _DE_NL , var);
 
 # define D_STR_DETAILS(str) _BR(0); print_str_details(strlen(str), str, #str);
 
