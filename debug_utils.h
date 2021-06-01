@@ -6,7 +6,7 @@
 /*   By: lorenuar <lorenuar@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/10 18:21:34 by lorenuar          #+#    #+#             */
-/*   Updated: 2021/05/31 20:33:50 by lorenuar         ###   ########.fr       */
+/*   Updated: 2021/06/01 02:57:40 by lorenuar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,14 +80,26 @@
 #  define BM(msg) _BR_MSG(msg); _BR(1);
 # endif
 
-# define _DE_AUTO(var) _Generic(((var)+0),	\
-	int		: _print( _CL_VAR #var " = " "%*d"     _CL_RST _DE_NL , _VAR_WIDTH ,var),	\
-	long	: _print( _CL_VAR #var " = " "%*ld"    _CL_RST _DE_NL , _VAR_WIDTH ,var),	\
-	double	: _print( _CL_VAR #var " = " "%*f"     _CL_RST _DE_NL , _VAR_WIDTH ,var),	\
-	float	: _print( _CL_VAR #var " = " "%*f"     _CL_RST _DE_NL , _VAR_WIDTH ,var),	\
-	size_t	: _print( _CL_VAR #var " = " "%*lu"    _CL_RST _DE_NL , _VAR_WIDTH ,var),	\
-	char*	: _print( _CL_VAR #var " = " "\"%*s\"" _CL_RST _DE_NL , _VAR_WIDTH ,var),	\
-	default	: _print( _CL_VAR #var " = " "%*p"     _CL_RST _DE_NL , _VAR_WIDTH ,var))
+# define _DE_CONV_DEC(var) _Generic(((var)+0),	\
+	char					: "%*c", \
+    signed char				: "%*hhd", \
+    unsigned char			: "%*hhu", \
+    signed short			: "%*hd", \
+    unsigned short			: "%*hu", \
+    signed int				: "%*d", \
+    unsigned int			: "%*u", \
+    long int				: "%*ld", \
+    unsigned long int		: "%*lu", \
+    long long int			: "%*lld", \
+    unsigned long long int	: "%*llu", \
+    float					: "%*f", \
+    double					: "%*f", \
+    long double				: "%*Lf", \
+    char *					: "%*s", \
+    void *					: "%*p", \
+    default					: "%*p")
+
+# define _DE_AUTO(var) _print( _CL_VAR #var "%s", " = "); _print(_DE_CONV_DEC(var), _VAR_WIDTH, var); _print(_CL_RST "%s" , _DE_NL);
 
 # define DE(var) _BR(0); _DE_AUTO(var);
 
