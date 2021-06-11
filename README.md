@@ -1,6 +1,9 @@
 ```bash
 curl https://raw.githubusercontent.com/lorenuars19/debug-utils/main/debug_utils.h -o debug_utils.h
-````
+```
+```c
+#include "debug_utils.h"
+```
 to add to your global include folder, so you can include with `#include <debug_utils.h>` run this <br>
 ```bash
 sudo cp debug_utils.h /usr/include/debug_utils.h
