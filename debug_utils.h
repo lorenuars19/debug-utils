@@ -6,7 +6,7 @@
 /*   By: lorenuar <lorenuar@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/10 18:21:34 by lorenuar          #+#    #+#             */
-/*   Updated: 2021/06/11 20:28:57 by lorenuar         ###   ########.fr       */
+/*   Updated: 2021/06/11 21:14:15 by lorenuar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,41 +146,41 @@ static inline void	print_str_details(size_t len, char *str, const char *name)
 /* ************************ RECURSIVE LINE BUILDER ************************** */
 /* ************************************************************************** */
 
-#define __FIRST(a, ...) a
-#define __SECOND(a, b, ...) b
+#define _FIRST(a, ...) a
+#define _SECOND(a, b, ...) b
 
-#define __EMPTY()
+#define EMPTY()
 
-#define __EVAL(...) __EVAL1024(__VA_ARGS__)
-#define __EVAL1024(...) __EVAL512(__EVAL512(__VA_ARGS__))
-#define __EVAL512(...) __EVAL256(__EVAL256(__VA_ARGS__))
-#define __EVAL256(...) __EVAL128(__EVAL128(__VA_ARGS__))
-#define __EVAL128(...) __EVAL64(__EVAL64(__VA_ARGS__))
-#define __EVAL64(...) __EVAL32(__EVAL32(__VA_ARGS__))
-#define __EVAL32(...) __EVAL16(__EVAL16(__VA_ARGS__))
-#define __EVAL16(...) __EVAL8(__EVAL8(__VA_ARGS__))
-#define __EVAL8(...) __EVAL4(__EVAL4(__VA_ARGS__))
-#define __EVAL4(...) __EVAL2(__EVAL2(__VA_ARGS__))
-#define __EVAL2(...) __EVAL1(__EVAL1(__VA_ARGS__))
-#define __EVAL1(...) __VA_ARGS__
+#define DBGUTI_EVAL(...) EVAL1024(__VA_ARGS__)
+#define EVAL1024(...) EVAL512(EVAL512(__VA_ARGS__))
+#define EVAL512(...) EVAL256(EVAL256(__VA_ARGS__))
+#define EVAL256(...) EVAL128(EVAL128(__VA_ARGS__))
+#define EVAL128(...) EVAL64(EVAL64(__VA_ARGS__))
+#define EVAL64(...) EVAL32(EVAL32(__VA_ARGS__))
+#define EVAL32(...) EVAL16(EVAL16(__VA_ARGS__))
+#define EVAL16(...) EVAL8(EVAL8(__VA_ARGS__))
+#define EVAL8(...) EVAL4(EVAL4(__VA_ARGS__))
+#define EVAL4(...) EVAL2(EVAL2(__VA_ARGS__))
+#define EVAL2(...) EVAL1(EVAL1(__VA_ARGS__))
+#define EVAL1(...) __VA_ARGS__
 
-#define __DEFER1(m) m __EMPTY()
-#define __DEFER2(m) m __EMPTY __EMPTY()()
-#define __DEFER3(m) m __EMPTY __EMPTY __EMPTY()()()
-#define __DEFER4(m) m __EMPTY __EMPTY __EMPTY __EMPTY()()()()
+#define DEFER1(m) m EMPTY()
+#define DEFER2(m) m EMPTY EMPTY()()
+#define DEFER3(m) m EMPTY EMPTY EMPTY()()()
+#define DEFER4(m) m EMPTY EMPTY EMPTY EMPTY()()()()
 
-#define __IS_PROBE(...) __SECOND(__VA_ARGS__, 0)
-#define __PROBE() ~, 1
+#define IS_PROBE(...) __SECOND(__VA_ARGS__, 0)
+#define PROBE() ~, 1
 
 #define CAT(a,b) a ## b
 
-#define __NOT(x) __IS_PROBE(CAT(_NOT_, x))
-#define ___NOT_0 __PROBE()
+#define NOT(x) IS_PROBE(CAT(_NOT_, x))
+#define _NOT_0 PROBE()
 
-#define __BOOL(x) __NOT(__NOT(x))
+#define BOOL(x) NOT(NOT(x))
 
-#define __IF_ELSE(condition) ___IF_ELSE(__BOOL(condition))
-#define ___IF_ELSE(condition) CAT(_IF_, condition)
+#define IF_ELSE(condition) _IF_ELSE(BOOL(condition))
+#define _IF_ELSE(condition) CAT(_IF_, condition)
 
 #define _IF_1(...) __VA_ARGS__ _IF_1_ELSE
 #define _IF_0(...)             _IF_0_ELSE
@@ -188,21 +188,22 @@ static inline void	print_str_details(size_t len, char *str, const char *name)
 #define _IF_1_ELSE(...)
 #define _IF_0_ELSE(...) __VA_ARGS__
 
-#define __HAS_ARGS(...) __BOOL(__FIRST(_END_OF_ARGUMENTS_ __VA_ARGS__)())
+#define HAS_ARGS(...) BOOL(__FIRST(_END_OF_ARGUMENTS_ __VA_ARGS__)())
 #define _END_OF_ARGUMENTS_() 0
 
-#define __MAP(m, first, ...)           \
+#define MAP(m, first, ...)           \
   m(first)                           \
-  __IF_ELSE(__HAS_ARGS(__VA_ARGS__))(    \
-    __DEFER2(_MAP)()(m, __VA_ARGS__)   \
+  IF_ELSE(HAS_ARGS(__VA_ARGS__))(    \
+    DEFER2(_MAP)()(m, __VA_ARGS__)   \
   )(                                 \
     /* Do nothing, just terminate */ \
   )
-#define _MAP() __MAP
+#define _MAP() MAP
+
 
 #define _PVAR(var) _print( _CL_VAR "- " #var " "); _print(_DE_CONV_DEC(var), -_VAR_WIDTH, var); _print(" -")
 
-#define _BUILD_LINE(...)  __EVAL(__MAP(_PVAR, ##__VA_ARGS__ ))
+#define _BUILD_LINE(...)  DBGUTI_EVAL(MAP(_PVAR, ##__VA_ARGS__ ))
 
 
 #define DB(...) _BR(0) _BUILD_LINE(__VA_ARGS__) _print( _CL_RST "\n");
