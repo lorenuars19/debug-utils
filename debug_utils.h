@@ -6,7 +6,7 @@
 /*   By: lorenuar <lorenuar@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/10 18:21:34 by lorenuar          #+#    #+#             */
-/*   Updated: 2021/06/11 21:14:15 by lorenuar         ###   ########.fr       */
+/*   Updated: 2021/06/11 22:02:45 by lorenuar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,8 +146,8 @@ static inline void	print_str_details(size_t len, char *str, const char *name)
 /* ************************ RECURSIVE LINE BUILDER ************************** */
 /* ************************************************************************** */
 
-#define _FIRST(a, ...) a
-#define _SECOND(a, b, ...) b
+#define FIRST(a, ...) a
+#define SECOND(a, b, ...) b
 
 #define EMPTY()
 
@@ -169,7 +169,7 @@ static inline void	print_str_details(size_t len, char *str, const char *name)
 #define DEFER3(m) m EMPTY EMPTY EMPTY()()()
 #define DEFER4(m) m EMPTY EMPTY EMPTY EMPTY()()()()
 
-#define IS_PROBE(...) __SECOND(__VA_ARGS__, 0)
+#define IS_PROBE(...) SECOND(__VA_ARGS__, 0)
 #define PROBE() ~, 1
 
 #define CAT(a,b) a ## b
@@ -188,7 +188,7 @@ static inline void	print_str_details(size_t len, char *str, const char *name)
 #define _IF_1_ELSE(...)
 #define _IF_0_ELSE(...) __VA_ARGS__
 
-#define HAS_ARGS(...) BOOL(__FIRST(_END_OF_ARGUMENTS_ __VA_ARGS__)())
+#define HAS_ARGS(...) BOOL(FIRST(_END_OF_ARGUMENTS_ __VA_ARGS__)())
 #define _END_OF_ARGUMENTS_() 0
 
 #define MAP(m, first, ...)           \
