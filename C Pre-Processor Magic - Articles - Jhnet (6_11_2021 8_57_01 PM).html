@@ -1,0 +1,1123 @@
+<!DOCTYPE html> <html data-darkreader-mode=dynamic data-darkreader-scheme=dark style><!--
+ Page saved with SingleFile 
+ url: http://jhnet.co.uk/articles/cpp_magic#iterators 
+ saved date: Fri Jun 11 2021 20:57:01 GMT+0200 (Central European Summer Time)
+--><meta charset=utf-8><style class="darkreader darkreader--user-agent" media=screen>:root{--darkreader-neutral-background:#1f2122;--darkreader-neutral-text:#c4c1bc;--darkreader-selection-background:#0f509d;--darkreader-selection-text:#d1d0cd}:root{}html{background-color:#232526!important}html,body{background-color:#232526}html,body{border-color:#6f695e;color:#d1d0cd}a{color:#3a89e4}::placeholder{color:#a49e96}::-webkit-scrollbar{background-color:#2a2d2d;color:#9e988f}::-webkit-scrollbar-thumb{background-color:#494d50}::-webkit-scrollbar-thumb:hover{background-color:#585e61}::-webkit-scrollbar-thumb:active{background-color:#4b5153}::-webkit-scrollbar-corner{background-color:#232526}::selection{background-color:#0f509d!important;color:#d1d0cd!important}</style>
+<title>C Pre-Processor Magic - Articles - Jhnet</title>
+<meta name=viewport content="width=device-width, initial-scale=1.0">
+<style>html,body{height:100%}div.masthead{background-color:rgb(234,234,234);margin-bottom:10px;border-color:#ccc;border-width:1px;border-bottom-style:solid}@media (max-width:767px){div.masthead{margin-left:-20px;margin-right:-20px}}div.masthead .nav{margin-top:20px;margin-bottom:20px}div.masthead .brand{display:inline-block;margin-top:20px;margin-left:5px}div.content{min-height:50%}</style><style class="darkreader darkreader--sync" media=screen data-savepage-sheetrules='.hide-text { color: transparent; text-shadow: none; background-color: transparent; border-color: initial; }
+a:focus { outline-color: rgb(171, 118, 15); }
+a:hover, a:active { outline-color: initial; }
+img { border-color: initial; }
+body { color: rgb(182, 178, 172); background-color: rgb(35, 37, 38); }
+a { color: rgb(66, 174, 228); text-decoration-color: initial; }
+a:hover, a:focus { color: rgb(111, 189, 228); text-decoration-color: initial; }
+.img-polaroid { background-color: rgb(35, 37, 38); border-color: rgba(132, 124, 111, 0.2); box-shadow: rgba(15, 15, 15, 0.1) 0px 1px 3px; }
+.muted { color: rgb(156, 149, 140); }
+a.muted:hover, a.muted:focus { color: rgb(142, 135, 123); }
+.text-warning { color: rgb(180, 150, 96); }
+a.text-warning:hover, a.text-warning:focus { color: rgb(182, 152, 101); }
+.text-error { color: rgb(176, 92, 91); }
+a.text-error:hover, a.text-error:focus { color: rgb(183, 112, 111); }
+.text-info { color: rgb(96, 155, 184); }
+a.text-info:hover, a.text-info:focus { color: rgb(117, 167, 192); }
+.text-success { color: rgb(121, 173, 121); }
+a.text-success:hover, a.text-success:focus { color: rgb(141, 182, 141); }
+h1, h2, h3, h4, h5, h6 { color: inherit; }
+h1 small, h2 small, h3 small, h4 small, h5 small, h6 small { color: rgb(156, 149, 140); }
+.page-header { border-bottom-color: rgb(60, 63, 65); }
+ul.unstyled, ol.unstyled { list-style-image: initial; }
+ul.inline, ol.inline { list-style-image: initial; }
+hr { border-right-color: initial; border-left-color: initial; border-top-color: rgb(60, 63, 65); border-bottom-color: rgb(55, 59, 60); }
+abbr[title], abbr[data-original-title] { border-bottom-color: rgb(80, 85, 87); }
+blockquote { border-left-color: rgb(60, 63, 65); }
+blockquote small { color: rgb(156, 149, 140); }
+blockquote.pull-right { border-right-color: rgb(60, 63, 65); border-left-color: initial; }
+code, pre { color: rgb(182, 178, 172); }
+code { color: rgb(215, 60, 99); background-color: rgb(39, 40, 41); border-color: rgb(61, 65, 67); }
+pre { background-color: rgb(40, 42, 43); border-color: rgba(132, 124, 111, 0.15); }
+pre code { color: inherit; background-color: transparent; border-color: initial; }
+fieldset { border-color: initial; }
+legend { color: rgb(182, 178, 172); border-top-color: initial; border-right-color: initial; border-left-color: initial; border-bottom-color: rgb(61, 65, 67); }
+legend small { color: rgb(156, 149, 140); }
+select, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input { color: rgb(164, 159, 151); }
+textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input { background-color: rgb(35, 37, 38); border-color: rgb(67, 72, 74); box-shadow: rgba(15, 15, 15, 0.07) 0px 1px 1px inset; }
+textarea:focus, input[type="text"]:focus, input[type="password"]:focus, input[type="datetime"]:focus, input[type="datetime-local"]:focus, input[type="date"]:focus, input[type="month"]:focus, input[type="time"]:focus, input[type="week"]:focus, input[type="number"]:focus, input[type="email"]:focus, input[type="url"]:focus, input[type="search"]:focus, input[type="tel"]:focus, input[type="color"]:focus, .uneditable-input:focus { border-color: rgba(29, 88, 136, 0.8); outline-color: initial; box-shadow: rgba(15, 15, 15, 0.07) 0px 1px 1px inset, rgba(29, 91, 141, 0.6) 0px 0px 8px; }
+select { background-color: rgb(35, 37, 38); border-color: rgb(67, 72, 74); }
+select:focus, input[type="file"]:focus, input[type="radio"]:focus, input[type="checkbox"]:focus { outline-color: rgb(171, 118, 15); }
+.uneditable-input, .uneditable-textarea { color: rgb(156, 149, 140); background-color: rgb(37, 39, 40); border-color: rgb(67, 72, 74); box-shadow: rgba(15, 15, 15, 0.02) 0px 1px 2px inset; }
+input::-webkit-input-placeholder, textarea::-webkit-input-placeholder { color: rgb(156, 149, 140); }
+input[disabled], select[disabled], textarea[disabled], input[readonly], select[readonly], textarea[readonly] { background-color: rgb(44, 45, 47); }
+input[type="radio"][disabled], input[type="checkbox"][disabled], input[type="radio"][readonly], input[type="checkbox"][readonly] { background-color: transparent; }
+.control-group.warning .control-label, .control-group.warning .help-block, .control-group.warning .help-inline { color: rgb(180, 150, 96); }
+.control-group.warning .checkbox, .control-group.warning .radio, .control-group.warning input, .control-group.warning select, .control-group.warning textarea { color: rgb(180, 150, 96); }
+.control-group.warning input, .control-group.warning select, .control-group.warning textarea { border-color: rgb(121, 96, 54); box-shadow: rgba(15, 15, 15, 0.07) 0px 1px 1px inset; }
+.control-group.warning input:focus, .control-group.warning select:focus, .control-group.warning textarea:focus { border-color: rgb(130, 104, 57); box-shadow: rgba(15, 15, 15, 0.07) 0px 1px 1px inset, rgb(95, 77, 45) 0px 0px 6px; }
+.control-group.warning .input-prepend .add-on, .control-group.warning .input-append .add-on { color: rgb(180, 150, 96); background-color: rgb(68, 60, 21); border-color: rgb(121, 96, 54); }
+.control-group.error .control-label, .control-group.error .help-block, .control-group.error .help-inline { color: rgb(176, 92, 91); }
+.control-group.error .checkbox, .control-group.error .radio, .control-group.error input, .control-group.error select, .control-group.error textarea { color: rgb(176, 92, 91); }
+.control-group.error input, .control-group.error select, .control-group.error textarea { border-color: rgb(123, 58, 56); box-shadow: rgba(15, 15, 15, 0.07) 0px 1px 1px inset; }
+.control-group.error input:focus, .control-group.error select:focus, .control-group.error textarea:focus { border-color: rgb(132, 61, 60); box-shadow: rgba(15, 15, 15, 0.07) 0px 1px 1px inset, rgb(101, 49, 48) 0px 0px 6px; }
+.control-group.error .input-prepend .add-on, .control-group.error .input-append .add-on { color: rgb(176, 92, 91); background-color: rgb(62, 34, 34); border-color: rgb(123, 58, 56); }
+.control-group.success .control-label, .control-group.success .help-block, .control-group.success .help-inline { color: rgb(121, 173, 121); }
+.control-group.success .checkbox, .control-group.success .radio, .control-group.success input, .control-group.success select, .control-group.success textarea { color: rgb(121, 173, 121); }
+.control-group.success input, .control-group.success select, .control-group.success textarea { border-color: rgb(70, 122, 71); box-shadow: rgba(15, 15, 15, 0.07) 0px 1px 1px inset; }
+.control-group.success input:focus, .control-group.success select:focus, .control-group.success textarea:focus { border-color: rgb(75, 130, 75); box-shadow: rgba(15, 15, 15, 0.07) 0px 1px 1px inset, rgb(65, 110, 76) 0px 0px 6px; }
+.control-group.success .input-prepend .add-on, .control-group.success .input-append .add-on { color: rgb(121, 173, 121); background-color: rgb(50, 65, 35); border-color: rgb(70, 122, 71); }
+.control-group.info .control-label, .control-group.info .help-block, .control-group.info .help-inline { color: rgb(96, 155, 184); }
+.control-group.info .checkbox, .control-group.info .radio, .control-group.info input, .control-group.info select, .control-group.info textarea { color: rgb(96, 155, 184); }
+.control-group.info input, .control-group.info select, .control-group.info textarea { border-color: rgb(55, 106, 132); box-shadow: rgba(15, 15, 15, 0.07) 0px 1px 1px inset; }
+.control-group.info input:focus, .control-group.info select:focus, .control-group.info textarea:focus { border-color: rgb(57, 113, 142); box-shadow: rgba(15, 15, 15, 0.07) 0px 1px 1px inset, rgb(48, 91, 114) 0px 0px 6px; }
+.control-group.info .input-prepend .add-on, .control-group.info .input-append .add-on { color: rgb(96, 155, 184); background-color: rgb(27, 55, 70); border-color: rgb(55, 106, 132); }
+input:focus:invalid, textarea:focus:invalid, select:focus:invalid { color: rgb(176, 92, 91); border-color: rgb(134, 30, 28); }
+input:focus:invalid:focus, textarea:focus:invalid:focus, select:focus:invalid:focus { border-color: rgb(145, 32, 29); box-shadow: rgb(91, 24, 23) 0px 0px 6px; }
+.form-actions { background-color: rgb(40, 42, 43); border-top-color: rgb(61, 65, 67); }
+.help-block, .help-inline { color: rgb(162, 157, 148); }
+.input-append .add-on, .input-prepend .add-on { text-shadow: rgb(35, 37, 38) 0px 1px 0px; background-color: rgb(44, 45, 47); border-color: rgb(67, 72, 74); }
+.input-append .active, .input-prepend .active { background-color: rgb(56, 89, 46); border-color: rgb(61, 124, 61); }
+table { background-color: transparent; }
+.table th, .table td { border-top-color: rgb(64, 67, 70); }
+.table caption + thead tr:first-child th, .table caption + thead tr:first-child td, .table colgroup + thead tr:first-child th, .table colgroup + thead tr:first-child td, .table thead:first-child tr:first-child th, .table thead:first-child tr:first-child td { border-top-color: initial; }
+.table tbody + tbody { border-top-color: rgb(64, 67, 70); }
+.table .table { background-color: rgb(35, 37, 38); }
+.table-bordered { border-top-color: rgb(64, 67, 70); border-right-color: rgb(64, 67, 70); border-bottom-color: rgb(64, 67, 70); border-left-color: initial; }
+.table-bordered th, .table-bordered td { border-left-color: rgb(64, 67, 70); }
+.table-bordered caption + thead tr:first-child th, .table-bordered caption + tbody tr:first-child th, .table-bordered caption + tbody tr:first-child td, .table-bordered colgroup + thead tr:first-child th, .table-bordered colgroup + tbody tr:first-child th, .table-bordered colgroup + tbody tr:first-child td, .table-bordered thead:first-child tr:first-child th, .table-bordered tbody:first-child tr:first-child th, .table-bordered tbody:first-child tr:first-child td { border-top-color: initial; }
+.table-striped tbody > tr:nth-child(2n+1) > td, .table-striped tbody > tr:nth-child(2n+1) > th { background-color: rgb(38, 40, 41); }
+.table-hover tbody tr:hover > td, .table-hover tbody tr:hover > th { background-color: rgb(40, 42, 43); }
+.table tbody tr.success > td { background-color: rgb(50, 65, 35); }
+.table tbody tr.error > td { background-color: rgb(62, 34, 34); }
+.table tbody tr.warning > td { background-color: rgb(68, 60, 21); }
+.table tbody tr.info > td { background-color: rgb(27, 55, 70); }
+.table-hover tbody tr.success:hover > td { background-color: rgb(55, 75, 38); }
+.table-hover tbody tr.error:hover > td { background-color: rgb(71, 37, 37); }
+.table-hover tbody tr.warning:hover > td { background-color: rgb(80, 70, 22); }
+.table-hover tbody tr.info:hover > td { background-color: rgb(52, 55, 57); }
+[class^="icon-"], [class*=" icon-"] { background-image: url("blob:http://jhnet.co.uk/a9c272f6-faa0-48cc-b6c0-71c644d024e7"); }
+.icon-white, .nav-pills > .active > a > [class^="icon-"], .nav-pills > .active > a > [class*=" icon-"], .nav-list > .active > a > [class^="icon-"], .nav-list > .active > a > [class*=" icon-"], .navbar-inverse .nav > .active > a > [class^="icon-"], .navbar-inverse .nav > .active > a > [class*=" icon-"], .dropdown-menu > li > a:hover > [class^="icon-"], .dropdown-menu > li > a:focus > [class^="icon-"], .dropdown-menu > li > a:hover > [class*=" icon-"], .dropdown-menu > li > a:focus > [class*=" icon-"], .dropdown-menu > .active > a > [class^="icon-"], .dropdown-menu > .active > a > [class*=" icon-"], .dropdown-submenu:hover > a > [class^="icon-"], .dropdown-submenu:focus > a > [class^="icon-"], .dropdown-submenu:hover > a > [class*=" icon-"], .dropdown-submenu:focus > a > [class*=" icon-"] { background-image: url("http://jhnet.co.uk/img/glyphicons-halflings-white.png"); }
+.dropdown-toggle:active, .open .dropdown-toggle { outline-color: initial; }
+.caret { border-top-color: rgb(132, 124, 111); border-right-color: transparent; border-left-color: transparent; }
+.dropdown-menu { list-style-image: initial; background-color: rgb(35, 37, 38); border-color: rgba(132, 124, 111, 0.2); box-shadow: rgba(15, 15, 15, 0.2) 0px 5px 10px; }
+.dropdown-menu .divider { background-color: rgb(48, 50, 52); border-bottom-color: rgb(55, 59, 60); }
+.dropdown-menu > li > a { color: rgb(182, 178, 172); }
+.dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus, .dropdown-submenu:hover > a, .dropdown-submenu:focus > a { color: rgb(209, 208, 205); text-decoration-color: initial; background-color: rgb(15, 101, 145); background-image: linear-gradient(rgb(15, 106, 152), rgb(15, 95, 135)); }
+.dropdown-menu > .active > a, .dropdown-menu > .active > a:hover, .dropdown-menu > .active > a:focus { color: rgb(209, 208, 205); text-decoration-color: initial; background-color: rgb(15, 101, 145); background-image: linear-gradient(rgb(15, 106, 152), rgb(15, 95, 135)); outline-color: initial; }
+.dropdown-menu > .disabled > a, .dropdown-menu > .disabled > a:hover, .dropdown-menu > .disabled > a:focus { color: rgb(156, 149, 140); }
+.dropdown-menu > .disabled > a:hover, .dropdown-menu > .disabled > a:focus { text-decoration-color: initial; background-color: transparent; background-image: none; }
+.dropup .caret, .navbar-fixed-bottom .dropdown .caret { border-top-color: initial; border-bottom-color: rgb(132, 124, 111); }
+.dropdown-submenu > a::after { border-color: transparent transparent transparent rgb(67, 72, 74); }
+.dropdown-submenu:hover > a::after { border-left-color: rgb(55, 59, 60); }
+.well { background-color: rgb(40, 42, 43); border-color: rgb(62, 66, 68); box-shadow: rgba(15, 15, 15, 0.05) 0px 1px 1px inset; }
+.well blockquote { border-color: rgba(132, 124, 111, 0.15); }
+.close { color: rgb(209, 208, 205); text-shadow: rgb(35, 37, 38) 0px 1px 0px; }
+.close:hover, .close:focus { color: rgb(209, 208, 205); text-decoration-color: initial; }
+button.close { background-image: initial; background-color: transparent; border-color: initial; }
+.btn { color: rgb(182, 178, 172); text-shadow: rgba(35, 37, 38, 0.75) 0px 1px 1px; background-color: rgb(40, 42, 43); background-image: linear-gradient(rgb(35, 37, 38), rgb(47, 50, 51)); border-color: rgba(132, 124, 111, 0.1) rgba(132, 124, 111, 0.1) rgb(73, 78, 81); box-shadow: rgba(35, 37, 38, 0.2) 0px 1px 0px inset, rgba(15, 15, 15, 0.05) 0px 1px 2px; }
+.btn:hover, .btn:focus, .btn:active, .btn.active, .btn.disabled, .btn[disabled] { color: rgb(182, 178, 172); background-color: rgb(47, 50, 51); }
+.btn:hover, .btn:focus { color: rgb(182, 178, 172); text-decoration-color: initial; }
+.btn:focus { outline-color: rgb(171, 118, 15); }
+.btn.active, .btn:active { background-image: none; outline-color: initial; box-shadow: rgba(15, 15, 15, 0.15) 0px 2px 4px inset, rgba(15, 15, 15, 0.05) 0px 1px 2px; }
+.btn.disabled, .btn[disabled] { background-image: none; box-shadow: none; }
+.btn-primary.active, .btn-warning.active, .btn-danger.active, .btn-success.active, .btn-info.active, .btn-inverse.active { color: rgba(209, 208, 205, 0.75); }
+.btn-primary { color: rgb(209, 208, 205); text-shadow: rgba(15, 15, 15, 0.25) 0px -1px 0px; background-color: rgb(15, 88, 152); background-image: linear-gradient(rgb(15, 106, 152), rgb(15, 60, 152)); border-color: rgba(132, 124, 111, 0.1) rgba(132, 124, 111, 0.1) rgba(132, 124, 111, 0.25); }
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .btn-primary.disabled, .btn-primary[disabled] { color: rgb(209, 208, 205); background-color: rgb(15, 60, 152); }
+.btn-warning { color: rgb(209, 208, 205); text-shadow: rgba(15, 15, 15, 0.25) 0px -1px 0px; background-color: rgb(160, 101, 19); background-image: linear-gradient(rgb(145, 92, 19), rgb(181, 114, 19)); border-color: rgba(132, 124, 111, 0.1) rgba(132, 124, 111, 0.1) rgba(132, 124, 111, 0.25); }
+.btn-warning:hover, .btn-warning:focus, .btn-warning:active, .btn-warning.active, .btn-warning.disabled, .btn-warning[disabled] { color: rgb(209, 208, 205); background-color: rgb(181, 114, 19); }
+.btn-danger { color: rgb(209, 208, 205); text-shadow: rgba(15, 15, 15, 0.25) 0px -1px 0px; background-color: rgb(142, 45, 41); background-image: linear-gradient(rgb(137, 31, 28), rgb(142, 51, 47)); border-color: rgba(132, 124, 111, 0.1) rgba(132, 124, 111, 0.1) rgba(132, 124, 111, 0.25); }
+.btn-danger:hover, .btn-danger:focus, .btn-danger:active, .btn-danger.active, .btn-danger.disabled, .btn-danger[disabled] { color: rgb(209, 208, 205); background-color: rgb(142, 51, 47); }
+.btn-success { color: rgb(209, 208, 205); text-shadow: rgba(15, 15, 15, 0.25) 0px -1px 0px; background-color: rgb(81, 127, 65); background-image: linear-gradient(rgb(74, 125, 56), rgb(70, 124, 70)); border-color: rgba(132, 124, 111, 0.1) rgba(132, 124, 111, 0.1) rgba(132, 124, 111, 0.25); }
+.btn-success:hover, .btn-success:focus, .btn-success:active, .btn-success.active, .btn-success.disabled, .btn-success[disabled] { color: rgb(209, 208, 205); background-color: rgb(70, 124, 70); }
+.btn-info { color: rgb(209, 208, 205); text-shadow: rgba(15, 15, 15, 0.25) 0px -1px 0px; background-color: rgb(50, 120, 140); background-image: linear-gradient(rgb(39, 111, 133), rgb(47, 116, 136)); border-color: rgba(132, 124, 111, 0.1) rgba(132, 124, 111, 0.1) rgba(132, 124, 111, 0.25); }
+.btn-info:hover, .btn-info:focus, .btn-info:active, .btn-info.active, .btn-info.disabled, .btn-info[disabled] { color: rgb(209, 208, 205); background-color: rgb(47, 116, 136); }
+.btn-inverse { color: rgb(209, 208, 205); text-shadow: rgba(15, 15, 15, 0.25) 0px -1px 0px; background-color: rgb(50, 52, 54); background-image: linear-gradient(rgb(58, 61, 64), rgb(37, 39, 40)); border-color: rgba(132, 124, 111, 0.1) rgba(132, 124, 111, 0.1) rgba(132, 124, 111, 0.25); }
+.btn-inverse:hover, .btn-inverse:focus, .btn-inverse:active, .btn-inverse.active, .btn-inverse.disabled, .btn-inverse[disabled] { color: rgb(209, 208, 205); background-color: rgb(37, 39, 40); }
+.btn-link, .btn-link:active, .btn-link[disabled] { background-color: transparent; background-image: none; box-shadow: none; }
+.btn-link { color: rgb(66, 174, 228); border-color: transparent; }
+.btn-link:hover, .btn-link:focus { color: rgb(111, 189, 228); text-decoration-color: initial; background-color: transparent; }
+.btn-link[disabled]:hover, .btn-link[disabled]:focus { color: rgb(182, 178, 172); text-decoration-color: initial; }
+.btn-group .dropdown-toggle:active, .btn-group.open .dropdown-toggle { outline-color: initial; }
+.btn-group > .btn + .dropdown-toggle { box-shadow: rgba(35, 37, 38, 0.13) 1px 0px 0px inset, rgba(35, 37, 38, 0.2) 0px 1px 0px inset, rgba(15, 15, 15, 0.05) 0px 1px 2px; }
+.btn-group.open .dropdown-toggle { background-image: none; box-shadow: rgba(15, 15, 15, 0.15) 0px 2px 4px inset, rgba(15, 15, 15, 0.05) 0px 1px 2px; }
+.btn-group.open .btn.dropdown-toggle { background-color: rgb(47, 50, 51); }
+.btn-group.open .btn-primary.dropdown-toggle { background-color: rgb(15, 60, 152); }
+.btn-group.open .btn-warning.dropdown-toggle { background-color: rgb(181, 114, 19); }
+.btn-group.open .btn-danger.dropdown-toggle { background-color: rgb(142, 51, 47); }
+.btn-group.open .btn-success.dropdown-toggle { background-color: rgb(70, 124, 70); }
+.btn-group.open .btn-info.dropdown-toggle { background-color: rgb(47, 116, 136); }
+.btn-group.open .btn-inverse.dropdown-toggle { background-color: rgb(37, 39, 40); }
+.btn-primary .caret, .btn-warning .caret, .btn-danger .caret, .btn-info .caret, .btn-success .caret, .btn-inverse .caret { border-top-color: rgb(55, 59, 60); border-bottom-color: rgb(55, 59, 60); }
+.alert { text-shadow: rgba(35, 37, 38, 0.5) 0px 1px 0px; background-color: rgb(68, 60, 21); border-color: rgb(104, 76, 24); }
+.alert, .alert h4 { color: rgb(180, 150, 96); }
+.alert-success { color: rgb(121, 173, 121); background-color: rgb(50, 65, 35); border-color: rgb(65, 91, 45); }
+.alert-success h4 { color: rgb(121, 173, 121); }
+.alert-danger, .alert-error { color: rgb(176, 92, 91); background-color: rgb(62, 34, 34); border-color: rgb(88, 44, 50); }
+.alert-danger h4, .alert-error h4 { color: rgb(176, 92, 91); }
+.alert-info { color: rgb(96, 155, 184); background-color: rgb(27, 55, 70); border-color: rgb(34, 91, 102); }
+.alert-info h4 { color: rgb(96, 155, 184); }
+.nav { list-style-image: initial; }
+.nav > li > a:hover, .nav > li > a:focus { text-decoration-color: initial; background-color: rgb(44, 45, 47); }
+.nav-header { color: rgb(156, 149, 140); text-shadow: rgba(35, 37, 38, 0.5) 0px 1px 0px; }
+.nav-list > li > a, .nav-list .nav-header { text-shadow: rgba(35, 37, 38, 0.5) 0px 1px 0px; }
+.nav-list > .active > a, .nav-list > .active > a:hover, .nav-list > .active > a:focus { color: rgb(209, 208, 205); text-shadow: rgba(15, 15, 15, 0.2) 0px -1px 0px; background-color: rgb(15, 106, 152); }
+.nav-list .divider { background-color: rgb(48, 50, 52); border-bottom-color: rgb(55, 59, 60); }
+.nav-tabs { border-bottom-color: rgb(64, 67, 70); }
+.nav-tabs > li > a { border-color: transparent; }
+.nav-tabs > li > a:hover, .nav-tabs > li > a:focus { border-color: rgb(60, 63, 65) rgb(60, 63, 65) rgb(64, 67, 70); }
+.nav-tabs > .active > a, .nav-tabs > .active > a:hover, .nav-tabs > .active > a:focus { color: rgb(164, 159, 151); background-color: rgb(35, 37, 38); border-color: rgb(64, 67, 70) rgb(64, 67, 70) transparent; }
+.nav-pills > .active > a, .nav-pills > .active > a:hover, .nav-pills > .active > a:focus { color: rgb(209, 208, 205); background-color: rgb(15, 106, 152); }
+.nav-tabs.nav-stacked { border-bottom-color: initial; }
+.nav-tabs.nav-stacked > li > a { border-color: rgb(64, 67, 70); }
+.nav-tabs.nav-stacked > li > a:hover, .nav-tabs.nav-stacked > li > a:focus { border-color: rgb(64, 67, 70); }
+.nav .dropdown-toggle .caret { border-top-color: rgb(15, 123, 177); border-bottom-color: rgb(15, 123, 177); }
+.nav .dropdown-toggle:hover .caret, .nav .dropdown-toggle:focus .caret { border-top-color: rgb(15, 136, 197); border-bottom-color: rgb(15, 136, 197); }
+.nav .active .dropdown-toggle .caret { border-top-color: rgb(55, 59, 60); border-bottom-color: rgb(55, 59, 60); }
+.nav-tabs .active .dropdown-toggle .caret { border-top-color: rgb(109, 102, 92); border-bottom-color: rgb(109, 102, 92); }
+.nav-tabs .open .dropdown-toggle, .nav-pills .open .dropdown-toggle, .nav > li.dropdown.open.active > a:hover, .nav > li.dropdown.open.active > a:focus { color: rgb(209, 208, 205); background-color: rgb(84, 89, 92); border-color: rgb(80, 85, 87); }
+.nav li.dropdown.open .caret, .nav li.dropdown.open.active .caret, .nav li.dropdown.open a:hover .caret, .nav li.dropdown.open a:focus .caret { border-top-color: rgb(55, 59, 60); border-bottom-color: rgb(55, 59, 60); }
+.tabs-stacked .open > a:hover, .tabs-stacked .open > a:focus { border-color: rgb(80, 85, 87); }
+.tabs-below > .nav-tabs, .tabs-right > .nav-tabs, .tabs-left > .nav-tabs { border-bottom-color: initial; }
+.tabs-below > .nav-tabs { border-top-color: rgb(64, 67, 70); }
+.tabs-below > .nav-tabs > li > a:hover, .tabs-below > .nav-tabs > li > a:focus { border-top-color: rgb(64, 67, 70); border-bottom-color: transparent; }
+.tabs-below > .nav-tabs > .active > a, .tabs-below > .nav-tabs > .active > a:hover, .tabs-below > .nav-tabs > .active > a:focus { border-color: transparent rgb(64, 67, 70) rgb(64, 67, 70); }
+.tabs-left > .nav-tabs { border-right-color: rgb(64, 67, 70); }
+.tabs-left > .nav-tabs > li > a:hover, .tabs-left > .nav-tabs > li > a:focus { border-color: rgb(60, 63, 65) rgb(64, 67, 70) rgb(60, 63, 65) rgb(60, 63, 65); }
+.tabs-left > .nav-tabs .active > a, .tabs-left > .nav-tabs .active > a:hover, .tabs-left > .nav-tabs .active > a:focus { border-color: rgb(64, 67, 70) transparent rgb(64, 67, 70) rgb(64, 67, 70); }
+.tabs-right > .nav-tabs { border-left-color: rgb(64, 67, 70); }
+.tabs-right > .nav-tabs > li > a:hover, .tabs-right > .nav-tabs > li > a:focus { border-color: rgb(60, 63, 65) rgb(60, 63, 65) rgb(60, 63, 65) rgb(64, 67, 70); }
+.tabs-right > .nav-tabs .active > a, .tabs-right > .nav-tabs .active > a:hover, .tabs-right > .nav-tabs .active > a:focus { border-color: rgb(64, 67, 70) rgb(64, 67, 70) rgb(64, 67, 70) transparent; }
+.nav > .disabled > a { color: rgb(156, 149, 140); }
+.nav > .disabled > a:hover, .nav > .disabled > a:focus { text-decoration-color: initial; background-color: transparent; }
+.navbar-inner { background-color: rgb(38, 40, 40); background-image: linear-gradient(rgb(35, 37, 38), rgb(41, 44, 45)); border-color: rgb(65, 70, 72); box-shadow: rgba(15, 15, 15, 0.07) 0px 1px 4px; }
+.navbar .brand { color: rgb(147, 139, 129); text-shadow: rgb(35, 37, 38) 0px 1px 0px; }
+.navbar .brand:hover, .navbar .brand:focus { text-decoration-color: initial; }
+.navbar-text { color: rgb(147, 139, 129); }
+.navbar-link { color: rgb(147, 139, 129); }
+.navbar-link:hover, .navbar-link:focus { color: rgb(182, 178, 172); }
+.navbar .divider-vertical { border-right-color: rgb(55, 59, 60); border-left-color: rgb(59, 62, 64); }
+.navbar-fixed-top .navbar-inner, .navbar-static-top .navbar-inner { box-shadow: rgba(15, 15, 15, 0.1) 0px 1px 10px; }
+.navbar-fixed-bottom .navbar-inner { box-shadow: rgba(15, 15, 15, 0.1) 0px -1px 10px; }
+.navbar .nav > li > a { color: rgb(147, 139, 129); text-decoration-color: initial; text-shadow: rgb(35, 37, 38) 0px 1px 0px; }
+.navbar .nav > li > a:focus, .navbar .nav > li > a:hover { color: rgb(182, 178, 172); text-decoration-color: initial; background-color: transparent; }
+.navbar .nav > .active > a, .navbar .nav > .active > a:hover, .navbar .nav > .active > a:focus { color: rgb(164, 159, 151); text-decoration-color: initial; background-color: rgb(48, 50, 52); box-shadow: rgba(15, 15, 15, 0.13) 0px 3px 8px inset; }
+.navbar .btn-navbar { color: rgb(209, 208, 205); text-shadow: rgba(15, 15, 15, 0.25) 0px -1px 0px; background-color: rgb(44, 46, 47); background-image: linear-gradient(rgb(41, 44, 45), rgb(48, 50, 52)); border-color: rgba(132, 124, 111, 0.1) rgba(132, 124, 111, 0.1) rgba(132, 124, 111, 0.25); box-shadow: rgba(35, 37, 38, 0.1) 0px 1px 0px inset, rgba(35, 37, 38, 0.07) 0px 1px 0px; }
+.navbar .btn-navbar:hover, .navbar .btn-navbar:focus, .navbar .btn-navbar:active, .navbar .btn-navbar.active, .navbar .btn-navbar.disabled, .navbar .btn-navbar[disabled] { color: rgb(209, 208, 205); background-color: rgb(48, 50, 52); }
+.navbar .btn-navbar .icon-bar { background-color: rgb(40, 42, 43); box-shadow: rgba(15, 15, 15, 0.25) 0px 1px 0px; }
+.navbar .nav > li > .dropdown-menu::before { border-right-color: transparent; border-left-color: transparent; border-bottom-color: rgba(132, 124, 111, 0.2); }
+.navbar .nav > li > .dropdown-menu::after { border-right-color: transparent; border-bottom-color: rgb(55, 59, 60); border-left-color: transparent; }
+.navbar-fixed-bottom .nav > li > .dropdown-menu::before { border-bottom-color: initial; border-top-color: rgba(132, 124, 111, 0.2); }
+.navbar-fixed-bottom .nav > li > .dropdown-menu::after { border-top-color: rgb(55, 59, 60); border-bottom-color: initial; }
+.navbar .nav li.dropdown > a:hover .caret, .navbar .nav li.dropdown > a:focus .caret { border-top-color: rgb(118, 111, 100); border-bottom-color: rgb(118, 111, 100); }
+.navbar .nav li.dropdown.open > .dropdown-toggle, .navbar .nav li.dropdown.active > .dropdown-toggle, .navbar .nav li.dropdown.open.active > .dropdown-toggle { color: rgb(164, 159, 151); background-color: rgb(48, 50, 52); }
+.navbar .nav li.dropdown > .dropdown-toggle .caret { border-top-color: rgb(100, 94, 85); border-bottom-color: rgb(100, 94, 85); }
+.navbar .nav li.dropdown.open > .dropdown-toggle .caret, .navbar .nav li.dropdown.active > .dropdown-toggle .caret, .navbar .nav li.dropdown.open.active > .dropdown-toggle .caret { border-top-color: rgb(109, 102, 92); border-bottom-color: rgb(109, 102, 92); }
+.navbar-inverse .navbar-inner { background-color: rgb(32, 34, 35); background-image: linear-gradient(rgb(37, 39, 40), rgb(26, 27, 27)); border-color: rgb(122, 115, 103); }
+.navbar-inverse .brand, .navbar-inverse .nav > li > a { color: rgb(156, 149, 140); text-shadow: rgba(15, 15, 15, 0.25) 0px -1px 0px; }
+.navbar-inverse .brand:hover, .navbar-inverse .nav > li > a:hover, .navbar-inverse .brand:focus, .navbar-inverse .nav > li > a:focus { color: rgb(209, 208, 205); }
+.navbar-inverse .brand { color: rgb(156, 149, 140); }
+.navbar-inverse .navbar-text { color: rgb(156, 149, 140); }
+.navbar-inverse .nav > li > a:focus, .navbar-inverse .nav > li > a:hover { color: rgb(209, 208, 205); background-color: transparent; }
+.navbar-inverse .nav .active > a, .navbar-inverse .nav .active > a:hover, .navbar-inverse .nav .active > a:focus { color: rgb(209, 208, 205); background-color: rgb(26, 27, 27); }
+.navbar-inverse .navbar-link { color: rgb(156, 149, 140); }
+.navbar-inverse .navbar-link:hover, .navbar-inverse .navbar-link:focus { color: rgb(209, 208, 205); }
+.navbar-inverse .divider-vertical { border-right-color: rgb(123, 116, 104); border-left-color: rgb(127, 120, 107); }
+.navbar-inverse .nav li.dropdown.open > .dropdown-toggle, .navbar-inverse .nav li.dropdown.active > .dropdown-toggle, .navbar-inverse .nav li.dropdown.open.active > .dropdown-toggle { color: rgb(209, 208, 205); background-color: rgb(26, 27, 27); }
+.navbar-inverse .nav li.dropdown > a:hover .caret, .navbar-inverse .nav li.dropdown > a:focus .caret { border-top-color: rgb(55, 59, 60); border-bottom-color: rgb(55, 59, 60); }
+.navbar-inverse .nav li.dropdown > .dropdown-toggle .caret { border-top-color: rgb(80, 85, 87); border-bottom-color: rgb(80, 85, 87); }
+.navbar-inverse .nav li.dropdown.open > .dropdown-toggle .caret, .navbar-inverse .nav li.dropdown.active > .dropdown-toggle .caret, .navbar-inverse .nav li.dropdown.open.active > .dropdown-toggle .caret { border-top-color: rgb(55, 59, 60); border-bottom-color: rgb(55, 59, 60); }
+.navbar-inverse .navbar-search .search-query { color: rgb(209, 208, 205); background-color: rgb(66, 70, 73); border-color: rgb(127, 120, 107); box-shadow: rgba(15, 15, 15, 0.1) 0px 1px 2px inset, rgba(35, 37, 38, 0.15) 0px 1px 0px; }
+.navbar-inverse .navbar-search .search-query::-webkit-input-placeholder { color: rgb(182, 178, 172); }
+.navbar-inverse .navbar-search .search-query:focus, .navbar-inverse .navbar-search .search-query.focused { color: rgb(182, 178, 172); text-shadow: rgb(35, 37, 38) 0px 1px 0px; background-color: rgb(35, 37, 38); border-color: initial; outline-color: initial; box-shadow: rgba(15, 15, 15, 0.15) 0px 0px 3px; }
+.navbar-inverse .btn-navbar { color: rgb(209, 208, 205); text-shadow: rgba(15, 15, 15, 0.25) 0px -1px 0px; background-color: rgb(24, 24, 25); background-image: linear-gradient(rgb(29, 30, 30), rgb(18, 18, 18)); border-color: rgba(132, 124, 111, 0.1) rgba(132, 124, 111, 0.1) rgba(132, 124, 111, 0.25); }
+.navbar-inverse .btn-navbar:hover, .navbar-inverse .btn-navbar:focus, .navbar-inverse .btn-navbar:active, .navbar-inverse .btn-navbar.active, .navbar-inverse .btn-navbar.disabled, .navbar-inverse .btn-navbar[disabled] { color: rgb(209, 208, 205); background-color: rgb(18, 18, 18); }
+.breadcrumb { list-style-image: initial; background-color: rgb(40, 42, 43); }
+.breadcrumb > li { text-shadow: rgb(35, 37, 38) 0px 1px 0px; }
+.breadcrumb > li > .divider { color: rgb(182, 178, 172); }
+.breadcrumb > .active { color: rgb(156, 149, 140); }
+.pagination ul { box-shadow: rgba(15, 15, 15, 0.05) 0px 1px 2px; }
+.pagination ul > li > a, .pagination ul > li > span { text-decoration-color: initial; background-color: rgb(35, 37, 38); border-color: rgb(64, 67, 70); }
+.pagination ul > li > a:hover, .pagination ul > li > a:focus, .pagination ul > .active > a, .pagination ul > .active > span { background-color: rgb(40, 42, 43); }
+.pagination ul > .active > a, .pagination ul > .active > span { color: rgb(156, 149, 140); }
+.pagination ul > .disabled > span, .pagination ul > .disabled > a, .pagination ul > .disabled > a:hover, .pagination ul > .disabled > a:focus { color: rgb(156, 149, 140); background-color: transparent; }
+.pager { list-style-image: initial; }
+.pager li > a, .pager li > span { background-color: rgb(35, 37, 38); border-color: rgb(64, 67, 70); }
+.pager li > a:hover, .pager li > a:focus { text-decoration-color: initial; background-color: rgb(40, 42, 43); }
+.pager .disabled > a, .pager .disabled > a:hover, .pager .disabled > a:focus, .pager .disabled > span { color: rgb(156, 149, 140); background-color: rgb(35, 37, 38); }
+.modal-backdrop { background-color: rgb(15, 15, 15); }
+.modal { background-color: rgb(35, 37, 38); border-color: rgba(132, 124, 111, 0.3); outline-color: initial; box-shadow: rgba(15, 15, 15, 0.3) 0px 3px 7px; }
+.modal-header { border-bottom-color: rgb(60, 63, 65); }
+.modal-footer { background-color: rgb(40, 42, 43); border-top-color: rgb(64, 67, 70); box-shadow: rgb(35, 37, 38) 0px 1px 0px inset; }
+.tooltip-inner { color: rgb(209, 208, 205); text-decoration-color: initial; background-color: rgb(15, 15, 15); }
+.tooltip-arrow { border-color: transparent; }
+.tooltip.top .tooltip-arrow { border-top-color: rgb(132, 124, 111); }
+.tooltip.right .tooltip-arrow { border-right-color: rgb(132, 124, 111); }
+.tooltip.left .tooltip-arrow { border-left-color: rgb(132, 124, 111); }
+.tooltip.bottom .tooltip-arrow { border-bottom-color: rgb(132, 124, 111); }
+.popover { background-color: rgb(35, 37, 38); border-color: rgba(132, 124, 111, 0.2); box-shadow: rgba(15, 15, 15, 0.2) 0px 5px 10px; }
+.popover-title { background-color: rgb(40, 41, 42); border-bottom-color: rgb(60, 64, 65); }
+.popover .arrow, .popover .arrow::after { border-color: transparent; }
+.popover.top .arrow { border-top-color: rgba(132, 124, 111, 0.25); }
+.popover.top .arrow::after { border-top-color: rgb(55, 59, 60); }
+.popover.right .arrow { border-right-color: rgba(132, 124, 111, 0.25); }
+.popover.right .arrow::after { border-right-color: rgb(55, 59, 60); }
+.popover.bottom .arrow { border-bottom-color: rgba(132, 124, 111, 0.25); }
+.popover.bottom .arrow::after { border-bottom-color: rgb(55, 59, 60); }
+.popover.left .arrow { border-left-color: rgba(132, 124, 111, 0.25); }
+.popover.left .arrow::after { border-left-color: rgb(55, 59, 60); }
+.thumbnails { list-style-image: initial; }
+.thumbnail { border-color: rgb(64, 67, 70); box-shadow: rgba(15, 15, 15, 0.06) 0px 1px 3px; }
+a.thumbnail:hover, a.thumbnail:focus { border-color: rgb(15, 123, 177); box-shadow: rgba(15, 86, 158, 0.25) 0px 1px 4px; }
+.thumbnail .caption { color: rgb(164, 159, 151); }
+.media-list { list-style-image: initial; }
+.label, .badge { color: rgb(209, 208, 205); text-shadow: rgba(15, 15, 15, 0.25) 0px -1px 0px; background-color: rgb(84, 89, 92); }
+a.label:hover, a.label:focus, a.badge:hover, a.badge:focus { color: rgb(209, 208, 205); text-decoration-color: initial; }
+.label-important, .badge-important { background-color: rgb(138, 64, 62); }
+.label-important[href], .badge-important[href] { background-color: rgb(115, 55, 54); }
+.label-warning, .badge-warning { background-color: rgb(181, 114, 19); }
+.label-warning[href], .badge-warning[href] { background-color: rgb(147, 94, 19); }
+.label-success, .badge-success { background-color: rgb(62, 106, 63); }
+.label-success[href], .badge-success[href] { background-color: rgb(50, 84, 50); }
+.label-info, .badge-info { background-color: rgb(54, 106, 131); }
+.label-info[href], .badge-info[href] { background-color: rgb(45, 86, 106); }
+.label-inverse, .badge-inverse { background-color: rgb(47, 50, 51); }
+.label-inverse[href], .badge-inverse[href] { background-color: rgb(32, 33, 34); }
+.progress { background-color: rgb(40, 41, 42); background-image: linear-gradient(rgb(40, 42, 43), rgb(38, 40, 41)); box-shadow: rgba(15, 15, 15, 0.1) 0px 1px 2px inset; }
+.progress .bar { color: rgb(209, 208, 205); text-shadow: rgba(15, 15, 15, 0.25) 0px -1px 0px; background-color: rgb(24, 111, 156); background-image: linear-gradient(rgb(29, 119, 164), rgb(18, 101, 142)); box-shadow: rgba(15, 15, 15, 0.15) 0px -1px 0px inset; }
+.progress .bar + .bar { box-shadow: rgba(15, 15, 15, 0.15) 1px 0px 0px inset, rgba(15, 15, 15, 0.15) 0px -1px 0px inset; }
+.progress-striped .bar { background-color: rgb(29, 119, 164); background-image: linear-gradient(45deg, rgba(35, 37, 38, 0.15) 25%, rgba(15, 15, 15, 0) 25%, rgba(15, 15, 15, 0) 50%, rgba(35, 37, 38, 0.15) 50%, rgba(35, 37, 38, 0.15) 75%, rgba(15, 15, 15, 0) 75%, rgba(15, 15, 15, 0)); }
+.progress-danger .bar, .progress .bar-danger { background-color: rgb(141, 43, 40); background-image: linear-gradient(rgb(137, 31, 28), rgb(147, 55, 50)); }
+.progress-danger.progress-striped .bar, .progress-striped .bar-danger { background-color: rgb(137, 31, 28); background-image: linear-gradient(45deg, rgba(35, 37, 38, 0.15) 25%, rgba(15, 15, 15, 0) 25%, rgba(15, 15, 15, 0) 50%, rgba(35, 37, 38, 0.15) 50%, rgba(35, 37, 38, 0.15) 75%, rgba(15, 15, 15, 0) 75%, rgba(15, 15, 15, 0)); }
+.progress-success .bar, .progress .bar-success { background-color: rgb(79, 126, 63); background-image: linear-gradient(rgb(74, 125, 56), rgb(86, 128, 73)); }
+.progress-success.progress-striped .bar, .progress-striped .bar-success { background-color: rgb(74, 125, 56); background-image: linear-gradient(45deg, rgba(35, 37, 38, 0.15) 25%, rgba(15, 15, 15, 0) 25%, rgba(15, 15, 15, 0) 50%, rgba(35, 37, 38, 0.15) 50%, rgba(35, 37, 38, 0.15) 75%, rgba(15, 15, 15, 0) 75%, rgba(15, 15, 15, 0)); }
+.progress-info .bar, .progress .bar-info { background-color: rgb(49, 119, 139); background-image: linear-gradient(rgb(39, 111, 133), rgb(50, 119, 139)); }
+.progress-info.progress-striped .bar, .progress-striped .bar-info { background-color: rgb(39, 111, 133); background-image: linear-gradient(45deg, rgba(35, 37, 38, 0.15) 25%, rgba(15, 15, 15, 0) 25%, rgba(15, 15, 15, 0) 50%, rgba(35, 37, 38, 0.15) 50%, rgba(35, 37, 38, 0.15) 75%, rgba(15, 15, 15, 0) 75%, rgba(15, 15, 15, 0)); }
+.progress-warning .bar, .progress .bar-warning { background-color: rgb(160, 101, 19); background-image: linear-gradient(rgb(145, 92, 19), rgb(181, 114, 19)); }
+.progress-warning.progress-striped .bar, .progress-striped .bar-warning { background-color: rgb(145, 92, 19); background-image: linear-gradient(45deg, rgba(35, 37, 38, 0.15) 25%, rgba(15, 15, 15, 0) 25%, rgba(15, 15, 15, 0) 50%, rgba(35, 37, 38, 0.15) 50%, rgba(35, 37, 38, 0.15) 75%, rgba(15, 15, 15, 0) 75%, rgba(15, 15, 15, 0)); }
+.accordion-group { border-color: rgb(61, 65, 67); }
+.accordion-heading { border-bottom-color: initial; }
+.accordion-inner { border-top-color: rgb(61, 65, 67); }
+.carousel-control { color: rgb(209, 208, 205); background-image: initial; background-color: rgb(37, 39, 40); border-color: rgb(55, 59, 60); }
+.carousel-control:hover, .carousel-control:focus { color: rgb(209, 208, 205); text-decoration-color: initial; }
+.carousel-indicators { list-style-image: initial; }
+.carousel-indicators li { background-color: rgba(35, 37, 38, 0.25); }
+.carousel-indicators .active { background-color: rgb(35, 37, 38); }
+.carousel-caption { background-image: initial; background-color: rgba(15, 15, 15, 0.75); }
+.carousel-caption h4, .carousel-caption p { color: rgb(209, 208, 205); }
+.hero-unit { color: inherit; background-color: rgb(44, 45, 47); }
+.hero-unit h1 { color: inherit; }
+.hide-text { color: transparent; text-shadow: none; background-color: transparent; border-color: initial; }
+.uneditable-input, .uneditable-textarea { color: rgb(164, 159, 151); background-color: rgb(35, 37, 38); border-color: rgb(60, 63, 65); box-shadow: rgba(15, 15, 15, 0.07) 0px 1px 1px inset; }
+select[disabled], textarea[disabled], input[type="text"][disabled], input[type="password"][disabled], input[type="datetime"][disabled], input[type="datetime-local"][disabled], input[type="date"][disabled], input[type="month"][disabled], input[type="time"][disabled], input[type="week"][disabled], input[type="number"][disabled], input[type="email"][disabled], input[type="url"][disabled], input[type="search"][disabled] { color: rgb(156, 149, 140); }
+.uneditable-input.disabled, .uneditable-textarea.disabled { color: rgb(156, 149, 140); background-color: rgb(40, 42, 43); border-color: rgb(64, 67, 70); }
+.uneditable-form .form-actions { background-color: transparent; }
+.table tbody tr.rowlink:hover td { background-color: rgb(58, 61, 63); }
+a.rowlink { color: inherit; text-decoration-color: inherit; }
+.act { color: rgb(164, 159, 151); background-image: inherit; background-color: inherit; border-color: initial; }
+.act:hover { color: rgb(182, 178, 172); text-decoration-color: initial; text-shadow: rgba(69, 73, 75, 0.5) 1px 1px 3px; }
+.act-primary { color: rgb(84, 166, 228); }
+.act-primary:hover { color: rgb(84, 154, 228); text-shadow: rgba(15, 88, 152, 0.5) 1px 1px 3px; }
+.act-info { color: rgb(89, 167, 190); }
+.act-info:hover { color: rgb(90, 169, 193); text-shadow: rgba(49, 118, 139, 0.5) 1px 1px 3px; }
+.act-success { color: rgb(105, 167, 105); }
+.act-success:hover { color: rgb(121, 173, 121); text-shadow: rgba(70, 125, 70, 0.5) 1px 1px 3px; }
+.act-warning { color: rgb(180, 150, 96); }
+.act-warning:hover { color: rgb(224, 149, 42); text-shadow: rgba(132, 105, 59, 0.5) 1px 1px 3px; }
+.act-danger { color: rgb(176, 92, 91); }
+.act-danger:hover { color: rgb(193, 89, 84); text-shadow: rgba(139, 64, 62, 0.5) 1px 1px 3px; }
+.act.disabled, .act[disabled] { color: rgb(164, 159, 151); }
+.act.disabled:hover, .act[disabled]:hover { color: rgb(164, 159, 151); text-shadow: none; }
+.thumbnail-borderless .thumbnail { border-color: initial; box-shadow: none; }
+.fileupload-new.thumbnail-borderless .thumbnail { border-color: rgb(64, 67, 70); }
+.control-group.warning .fileupload .uneditable-input { color: rgb(182, 152, 101); border-color: rgb(130, 104, 57); }
+.control-group.warning .fileupload .fileupload-preview { color: rgb(182, 152, 101); }
+.control-group.warning .fileupload .thumbnail { border-color: rgb(130, 104, 57); }
+.control-group.error .fileupload .uneditable-input { color: rgb(176, 92, 91); border-color: rgb(123, 58, 56); }
+.control-group.error .fileupload .fileupload-preview { color: rgb(176, 92, 91); }
+.control-group.error .fileupload .thumbnail { border-color: rgb(123, 58, 56); }
+.control-group.success .fileupload .uneditable-input { color: rgb(121, 173, 121); border-color: rgb(70, 122, 71); }
+.control-group.success .fileupload .fileupload-preview { color: rgb(121, 173, 121); }
+.control-group.success .fileupload .thumbnail { border-color: rgb(70, 122, 71); }
+.nav-tabs > li > a, .nav-pills > li > a { outline-color: initial; }
+.nav-tabs > li.disabled > a { color: rgb(182, 178, 172); }
+.tabbable { border-color: rgb(64, 67, 70); }
+.tab-content { border-color: rgb(64, 67, 70); }
+.tabs-left > .nav-tabs > .active > a, .tabs-left > .nav-tabs > .active > a:hover { border-color: rgb(64, 67, 70) transparent rgb(64, 67, 70) rgb(64, 67, 70); }
+.tabs-right > .nav-tabs > .active > a, .tabs-right > .nav-tabs > .active > a:hover { border-color: rgb(64, 67, 70) rgb(64, 67, 70) rgb(64, 67, 70) transparent; }
+'>div.masthead{background-color:rgb(45,48,49);border-color:rgb(67,72,74)}.clearfix:before,.clearfix:after{display:table;line-height:0;content:""}.clearfix:after{clear:both}html{font-size:100%;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%}a:focus{outline:thin dotted #333;outline:5px auto -webkit-focus-ring-color;outline-offset:-2px}a:hover,a:active{outline:0}img{height:auto;max-width:100%;vertical-align:middle;border:0;-ms-interpolation-mode:bicubic}body{margin:0;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;color:#333;background-color:#fff}a{color:#08c;text-decoration:none}a:hover,a:focus{color:#005580;text-decoration:underline}.row{margin-left:-20px}.row:before,.row:after{display:table;line-height:0;content:""}.row:after{clear:both}[class*="span"]{float:left;min-height:1px;margin-left:20px}.container{width:940px}.span9{width:700px}.span3{width:220px}[class*="span"].pull-right{float:right}.container{margin-right:auto;margin-left:auto}.container:before,.container:after{display:table;line-height:0;content:""}.container:after{clear:both}p{margin:0 0 10px}small{font-size:85%}em{font-style:italic}.muted{color:#999}.text-center{text-align:center}h1,h2,h3{margin:10px 0;font-family:inherit;font-weight:bold;color:inherit;text-rendering:optimizelegibility}h1,h2,h3{line-height:40px}h1{font-size:38.5px}h2{font-size:31.5px}h3{font-size:24.5px}ul{padding:0;margin:0 0 10px 25px}ul ul{margin-bottom:0}li{line-height:20px}hr{margin:20px 0;border:0;border-top:1px solid #eee;border-bottom:1px solid #fff}code,pre{font-family:Monaco,Menlo,Consolas,"Courier New",monospace;font-size:12px;color:#333;-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px}code{padding:2px 4px;color:#d14;white-space:nowrap;background-color:#f7f7f9;border:1px solid #e1e1e8}pre{display:block;padding:9.5px;margin:0 0 10px;font-size:13px;line-height:20px;word-break:break-all;word-wrap:break-word;white-space:pre-wrap;background-color:#f5f5f5;border:1px solid rgba(0,0,0,0.15);-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px}.nav{margin-bottom:20px;margin-left:0;list-style:none}.nav>li>a{display:block}.nav>li>a:hover,.nav>li>a:focus{text-decoration:none;background-color:#eee}.nav-header{display:block;padding:3px 15px;font-size:11px;font-weight:bold;line-height:20px;color:#999;text-transform:uppercase}.nav-list{padding-right:15px;padding-left:15px;margin-bottom:0}.nav-list>li>a,.nav-list .nav-header{margin-right:-15px;margin-left:-15px;text-shadow:0 1px 0 rgba(255,255,255,0.5)}.nav-list>li>a{padding:3px 15px}.nav-tabs:before,.nav-pills:before,.nav-tabs:after,.nav-pills:after{display:table;line-height:0;content:""}.nav-tabs:after,.nav-pills:after{clear:both}.nav-pills>li{float:left}.nav-pills>li>a{padding-right:12px;padding-left:12px;margin-right:2px;line-height:14px}.nav-pills>li>a{padding-top:8px;padding-bottom:8px;margin-top:2px;margin-bottom:2px;-webkit-border-radius:5px;-moz-border-radius:5px;border-radius:5px}.nav-pills>.active>a,.nav-pills>.active>a:hover,.nav-pills>.active>a:focus{color:#fff;background-color:#08c}@-webkit-keyframes progress-bar-stripes{from{background-position:40px 0}to{background-position:0 0}}@-moz-keyframes progress-bar-stripes{from{background-position:40px 0}to{background-position:0 0}}@-ms-keyframes progress-bar-stripes{from{background-position:40px 0}to{background-position:0 0}}@-o-keyframes progress-bar-stripes{from{background-position:0 0}to{background-position:40px 0}}@keyframes progress-bar-stripes{from{background-position:40px 0}to{background-position:0 0}}.pull-right{float:right}.pull-left{float:left}.clearfix:before,.clearfix:after{display:table;line-height:0;content:""}.clearfix:after{clear:both}.nav-pills>li>a{outline:0}a:focus{outline-color:rgb(171,118,15)}a:hover,a:active{outline-color:initial}img{border-color:initial}body{color:rgb(182,178,172);background-color:rgb(35,37,38)}a{color:rgb(66,174,228);text-decoration-color:initial}a:hover,a:focus{color:rgb(111,189,228);text-decoration-color:initial}.muted{color:rgb(156,149,140)}h1,h2,h3{color:inherit}hr{border-right-color:initial;border-left-color:initial;border-top-color:rgb(60,63,65);border-bottom-color:rgb(55,59,60)}pre{color:rgb(182,178,172)}code{color:rgb(215,60,99);background-color:rgb(39,40,41);border-color:rgb(61,65,67)}pre{background-color:rgb(40,42,43);border-color:rgba(132,124,111,0.15)}.nav{list-style-image:initial}.nav>li>a:hover,.nav>li>a:focus{text-decoration-color:initial;background-color:rgb(44,45,47)}.nav-header{color:rgb(156,149,140)}.nav-list>li>a,.nav-list .nav-header{text-shadow:rgba(35,37,38,0.5) 0px 1px 0px}.nav-pills>.active>a,.nav-pills>.active>a:hover,.nav-pills>.active>a:focus{color:rgb(209,208,205);background-color:rgb(15,106,152)}.nav-pills>li>a{outline-color:initial}</style>
+<style>.clearfix:before,.clearfix:after{display:table;line-height:0;content:""}.clearfix:after{clear:both}@-ms-viewport{width:device-width}@media (min-width:1200px){.row{margin-left:-30px}.row:before,.row:after{display:table;line-height:0;content:""}.row:after{clear:both}[class*="span"]{float:left;min-height:1px;margin-left:30px}.container{width:1170px}.span9{width:870px}.span3{width:270px}}@media (min-width:768px) and (max-width:979px){.row{margin-left:-20px}.row:before,.row:after{display:table;line-height:0;content:""}.row:after{clear:both}[class*="span"]{float:left;min-height:1px;margin-left:20px}.container{width:724px}.span9{width:538px}.span3{width:166px}}@media (max-width:767px){body{padding-right:20px;padding-left:20px}.container{width:auto}.row{margin-left:0}[class*="span"]{display:block;float:none;width:100%;margin-left:0;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}}@media (max-width:979px){body{padding-top:0}}.clearfix:before,.clearfix:after{display:table;line-height:0;content:""}.clearfix:after{clear:both}#MathJax_Message{position:fixed;left:1em;bottom:1.5em;background-color:#E6E6E6;border:1px solid #959595;margin:0px;padding:2px 8px;z-index:102;color:black;font-size:80%;width:auto;white-space:nowrap}</style><style class="darkreader darkreader--sync" media=screen data-savepage-sheetrules=".MathJax_Preview { color: rgb(147, 139, 129); }
+#MathJax_Message { background-color: rgb(47, 50, 51); border-color: rgb(81, 86, 89); color: rgb(209, 208, 205); }
+#MathJax_MSIE_Frame { border-color: initial; }
+.MathJax_Error { color: rgb(228, 66, 66); }
+">#MathJax_Message{background-color:rgb(47,50,51);border-color:rgb(81,86,89);color:rgb(209,208,205)}</style><meta name=darkreader content=a20e875fa4bdf7da6cf5caf5aef69e3b><style class="darkreader darkreader--override" media=screen>::placeholder{opacity:0.5!important}</style><link type=image/x-icon rel="shortcut icon" href="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="><style>.sf-hidden{display:none!important}</style><link rel=canonical href=http://jhnet.co.uk/articles/cpp_magic#iterators></head>
+ <body style=zoom:1><div id=MathJax_Message style=display:none></div>
+ 
+<div class=masthead>
+ <div class=container>
+ <div class=clearfix>
+ <a class="brand pull-left" href=http://jhnet.co.uk/>
+ <img alt=Jhnet src="data:image/png;base64,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">
+ </a>
+ <ul class="nav nav-pills pull-right">
+ <li><a href=http://jhnet.co.uk/about>About Me</a></li>
+ <li><a href=http://jhnet.co.uk/projects>Projects</a></li>
+ <li class=active><a href=http://jhnet.co.uk/articles>Articles</a></li>
+ <li><a href=http://jhnet.co.uk/misc/>/misc</a></li>
+ </ul>
+ </div>
+ <hr class=sf-hidden>
+ </div>
+</div>
+<div class=content>
+ <div class=container>
+ 
+ <style>.codehilite{background:#f8f8f8}.codehilite .err{border:1px solid #FF0000}.codehilite .k{color:#008000;font-weight:bold}.codehilite .o{color:#666666}.codehilite .cm{color:#408080;font-style:italic}.codehilite .cp{color:#BC7A00}.codehilite .c1{color:#408080;font-style:italic}.codehilite .s{color:#BA2121}.codehilite .nl{color:#A0A000}.codehilite .nt{color:#008000;font-weight:bold}.codehilite .mi{color:#666666}.codehilite .s2{color:#BA2121}.codehilite .se{color:#BB6622;font-weight:bold}</style><style class="darkreader darkreader--sync sf-hidden" media=screen data-savepage-sheetrules=".codehilite .hll { background-color: rgb(84, 84, 15); }
+.codehilite { background-image: initial; background-color: rgb(39, 40, 41); }
+.codehilite .c { color: rgb(125, 177, 177); }
+.codehilite .err { border-color: rgb(165, 15, 15); }
+.codehilite .k { color: rgb(111, 228, 111); }
+.codehilite .o { color: rgb(156, 149, 140); }
+.codehilite .cm { color: rgb(125, 177, 177); }
+.codehilite .cp { color: rgb(228, 175, 75); }
+.codehilite .c1 { color: rgb(125, 177, 177); }
+.codehilite .cs { color: rgb(125, 177, 177); }
+.codehilite .gd { color: rgb(228, 92, 92); }
+.codehilite .gr { color: rgb(228, 37, 37); }
+.codehilite .gh { color: rgb(121, 161, 228); }
+.codehilite .gi { color: rgb(92, 228, 92); }
+.codehilite .go { color: rgb(142, 135, 123); }
+.codehilite .gp { color: rgb(121, 161, 228); }
+.codehilite .gu { color: rgb(228, 111, 228); }
+.codehilite .gt { color: rgb(81, 152, 228); }
+.codehilite .kc { color: rgb(111, 228, 111); }
+.codehilite .kd { color: rgb(111, 228, 111); }
+.codehilite .kn { color: rgb(111, 228, 111); }
+.codehilite .kp { color: rgb(111, 228, 111); }
+.codehilite .kr { color: rgb(111, 228, 111); }
+.codehilite .kt { color: rgb(228, 83, 136); }
+.codehilite .m { color: rgb(156, 149, 140); }
+.codehilite .s { color: rgb(203, 83, 83); }
+.codehilite .na { color: rgb(179, 195, 111); }
+.codehilite .nb { color: rgb(111, 228, 111); }
+.codehilite .nc { color: rgb(58, 120, 228); }
+.codehilite .no { color: rgb(228, 106, 106); }
+.codehilite .nd { color: rgb(162, 56, 228); }
+.codehilite .ni { color: rgb(156, 149, 140); }
+.codehilite .ne { color: rgb(194, 84, 79); }
+.codehilite .nf { color: rgb(58, 120, 228); }
+.codehilite .nl { color: rgb(228, 228, 92); }
+.codehilite .nn { color: rgb(58, 120, 228); }
+.codehilite .nt { color: rgb(111, 228, 111); }
+.codehilite .nv { color: rgb(131, 159, 210); }
+.codehilite .ow { color: rgb(162, 56, 228); }
+.codehilite .w { color: rgb(173, 168, 162); }
+.codehilite .mf { color: rgb(156, 149, 140); }
+.codehilite .mh { color: rgb(156, 149, 140); }
+.codehilite .mi { color: rgb(156, 149, 140); }
+.codehilite .mo { color: rgb(156, 149, 140); }
+.codehilite .sb { color: rgb(203, 83, 83); }
+.codehilite .sc { color: rgb(203, 83, 83); }
+.codehilite .sd { color: rgb(203, 83, 83); }
+.codehilite .s2 { color: rgb(203, 83, 83); }
+.codehilite .se { color: rgb(202, 136, 83); }
+.codehilite .sh { color: rgb(203, 83, 83); }
+.codehilite .si { color: rgb(176, 110, 136); }
+.codehilite .sx { color: rgb(111, 228, 111); }
+.codehilite .sr { color: rgb(176, 110, 136); }
+.codehilite .s1 { color: rgb(203, 83, 83); }
+.codehilite .ss { color: rgb(131, 159, 210); }
+.codehilite .bp { color: rgb(111, 228, 111); }
+.codehilite .vc { color: rgb(131, 159, 210); }
+.codehilite .vg { color: rgb(131, 159, 210); }
+.codehilite .vi { color: rgb(131, 159, 210); }
+.codehilite .il { color: rgb(156, 149, 140); }
+">.codehilite{background-image:initial;background-color:rgb(39,40,41)}.codehilite .err{border-color:rgb(165,15,15)}.codehilite .k{color:rgb(111,228,111)}.codehilite .o{color:rgb(156,149,140)}.codehilite .cm{color:rgb(125,177,177)}.codehilite .cp{color:rgb(228,175,75)}.codehilite .c1{color:rgb(125,177,177)}.codehilite .s{color:rgb(203,83,83)}.codehilite .nl{color:rgb(228,228,92)}.codehilite .nt{color:rgb(111,228,111)}.codehilite .mi{color:rgb(156,149,140)}.codehilite .s2{color:rgb(203,83,83)}.codehilite .se{color:rgb(202,136,83)}</style>
+ 
+ 
+<div class=row>
+ <div class="toc span3 pull-right">
+ <ul class="nav nav-list">
+ <li class=nav-header>Table of Contents</li>
+ <ul class="nav nav-list">
+ <li style=padding-left:0em><a href=#c-pre-processor-magic>C Pre-Processor Magic</a></li>
+ <li style=padding-left:1em><a href=#the-humble-define>The humble #define</a></li>
+ <li style=padding-left:1em><a href=#if-statements>If-statements</a></li>
+ <li style=padding-left:2em><a href=#pattern-matching>Pattern Matching</a></li>
+ <li style=padding-left:2em><a href=#cast-to-bool-and-negation>Cast to bool!! (and negation)</a></li>
+ <li style=padding-left:1em><a href=#iterators>Iterators</a></li>
+ <li style=padding-left:2em><a href=#forcing-cpp-to-make-multiple-passes>Forcing CPP to make multiple passes</a></li>
+ <li style=padding-left:2em><a href=#turning-multiple-expansion-passes-into-recursion>Turning multiple expansion passes into recursion</a></li>
+ <li style=padding-left:2em><a href=#turning-recursion-into-an-iterator>Turning recursion into an iterator</a></li>
+ <li style=padding-left:1em><a href=#learning-more>Learning More</a></li>
+ </ul>
+ </ul>
+ </div>
+ 
+ <div class="article span9">
+ <h1 id=c-pre-processor-magic>C Pre-Processor Magic</h1>
+<p>The C Pre-Processor (CPP) is the somewhat basic macro system used by the C
+programming language to implement features such as <code>#include</code> and <code>#define</code>
+which allow very simple text-substitutions to be carried out at compile time.
+In this article we abuse the humble <code>#define</code> to implement if-statements and
+iteration.</p>
+<p>Before we begin, a disclaimer: these tricks, while perfectly valid C, should not
+be considered good development practice and should almost certainly not be used
+for "real work". That said it can <a href=https://github.com/18sg/uSHET/blob/master/lib/cpp_magic.h>totally be used for fun home-automation
+projects</a>...</p>
+<h2 id=the-humble-define>The humble #define</h2>
+<p>Most C programmers will be familiar with the common-or-garden <code>#define</code>
+preprocessor directive. This directive allows the programmer to define a simple
+text-substitution macro. For example:</p>
+<div class=codehilite><pre><span></span><span class=cp>#define VERSION 123</span>
+
+<span class=c1>// ... later ...</span>
+<span class=n>printf</span><span class=p>(</span><span class=s>"Version: %d</span><span class=se>\n</span><span class=s>"</span><span class=p>,</span> <span class=n>VERSION</span><span class=p>);</span>
+</pre></div>
+<p>In this snippet we define a macro <code>VERSION</code> which the CPP will look for and
+replace with <code>123</code>. We can specify any valid sequence of C tokens (that is,
+fragments of valid C though these need not be syntactically valid, for example
+<code>, 123 { hello</code> would be acceptable). We can see this in action by feeding this
+to CPP like so:</p>
+<div class=codehilite><pre><span></span>cpp <span class=s>&lt;&lt; EOF</span>
+<span class=s>#define VERSION 123</span>
+
+<span class=s>// ... later ...</span>
+<span class=s>printf("Version: %d\n", VERSION);</span>
+<span class=s>EOF</span>
+</pre></div>
+<p>Which produces:</p>
+<div class=codehilite><pre><span></span><span class=err>#</span> <span class=nt>1</span> <span class=s2>"&lt;stdin&gt;"</span>
+<span class=err>#</span> <span class=nt>1</span> <span class=s2>"&lt;built-in&gt;"</span>
+<span class=err>#</span> <span class=nt>1</span> <span class=s2>"&lt;command-line&gt;"</span>
+<span class=err>#</span> <span class=nt>1</span> <span class=s2>"/usr/include/stdc-predef.h"</span> <span class=nt>1</span> <span class=nt>3</span> <span class=nt>4</span>
+<span class=err>#</span> <span class=nt>1</span> <span class=s2>"&lt;command-line&gt;"</span> <span class=nt>2</span>
+<span class=err>#</span> <span class=nt>1</span> <span class=s2>"&lt;stdin&gt;"</span>
+
+
+
+<span class=nt>printf</span><span class=o>(</span><span class=s2>"Version: %d\n"</span><span class=o>,</span> <span class=nt>123</span><span class=o>);</span>
+</pre></div>
+<p>This is actually the raw input that your compiler sees and compiles. The lines
+starting with <code>#</code> are not preprocessor directives but rather <a href=https://gcc.gnu.org/onlinedocs/cpp/Preprocessor-Output.html#Preprocessor-Output>compiler
+hints</a>
+which help the compiler work out line-numbers after <code>#include</code>s have been added
+and comments removed and thus produce helpful error messages. You can suppress
+these lines using <code>-P</code>.</p>
+<p>We can also define 'function-style' macros which take a number of arguments:</p>
+<div class=codehilite><pre><span></span><span class=cp>#define MULTIPLY(a, b) a * b</span>
+
+<span class=c1>// ... later ...</span>
+
+<span class=n>printf</span><span class=p>(</span><span class=s>"4*8 = %d</span><span class=se>\n</span><span class=s>"</span><span class=p>,</span> <span class=n>MULTIPLY</span><span class=p>(</span><span class=mi>4</span><span class=p>,</span> <span class=mi>8</span><span class=p>));</span>
+</pre></div>
+<p>Which expands to:</p>
+<div class=codehilite><pre><span></span><span class=n>printf</span><span class=p>(</span><span class=s>"4*8 = %d</span><span class=se>\n</span><span class=s>"</span><span class=p>,</span> <span class=mi>4</span> <span class=o>*</span> <span class=mi>8</span><span class=p>);</span>
+</pre></div>
+<p>Note that when using these in normal code it is common to place brackets around
+the macro substitution and also around the arguments:</p>
+<div class=codehilite><pre><span></span><span class=cp>#define MULTIPLY(a, b) ((a) * (b))</span>
+</pre></div>
+<p>The reason for this is that without the brackets the following may not do what
+you'd expect:</p>
+<div class=codehilite><pre><span></span><span class=n>printf</span><span class=p>(</span><span class=s>"%d</span><span class=se>\n</span><span class=s>"</span><span class=p>,</span> <span class=n>MULTIPLY</span><span class=p>(</span><span class=mi>4</span> <span class=o>+</span> <span class=mi>2</span><span class=p>,</span> <span class=mi>2</span> <span class=o>+</span> <span class=mi>8</span><span class=p>)</span> <span class=o>*</span> <span class=mi>2</span><span class=p>);</span>
+</pre></div>
+<p>Without brackets this expands to:</p>
+<div class=codehilite><pre><span></span><span class=n>printf</span><span class=p>(</span><span class=s>"%d</span><span class=se>\n</span><span class=s>"</span><span class=p>,</span> <span class=mi>4</span> <span class=o>+</span> <span class=mi>2</span> <span class=o>*</span> <span class=mi>2</span> <span class=o>+</span> <span class=mi>8</span> <span class=o>*</span> <span class=mi>2</span><span class=p>);</span>
+</pre></div>
+<p>Which due to operator precedence rules (multiplies are evaluated first) would
+not evaluate how you'd expect. The bracketed version, however, works as you'd
+expect:</p>
+<div class=codehilite><pre><span></span><span class=n>printf</span><span class=p>(</span><span class=s>"%d</span><span class=se>\n</span><span class=s>"</span><span class=p>,</span> <span class=p>((</span><span class=mi>4</span> <span class=o>+</span> <span class=mi>2</span><span class=p>)</span> <span class=o>*</span> <span class=p>(</span><span class=mi>2</span> <span class=o>+</span> <span class=mi>8</span><span class=p>))</span> <span class=o>*</span> <span class=mi>2</span><span class=p>);</span>
+</pre></div>
+<p>As a final advanced twist, we can define function style macros with varadic
+arguments. You'll see these most often looking like this:</p>
+<div class=codehilite><pre><span></span><span class=cp>#define DEBUG(...) fprintf(stderr, __VA_ARGS__)</span>
+
+<span class=c1>// ... later, inside a for-loop ...</span>
+
+<span class=n>DEBUG</span><span class=p>(</span><span class=s>"Something went wrong in iteration: %d"</span><span class=p>,</span> <span class=n>i</span><span class=p>);</span>
+</pre></div>
+<p>If we specify the final argument to our macro as being <code>...</code>, the macro will
+accept any number of arguments (even zero). These arguments are inserted into
+your substitution if you write <code>__VA_ARGS__</code>, complete with separating commas
+between each of the arguments.</p>
+<p>This is where sane usage of macros in C ends.</p>
+<h2 id=if-statements>If-statements</h2>
+<p>Time for our first bit of magic. Let's try and produce a macro that does the
+following:</p>
+<div class=codehilite><pre><span></span><span class=n>IF_ELSE</span><span class=p>(</span><span class=n>condition</span><span class=p>)(</span>
+    <span class=n>expand</span> <span class=n>to</span> <span class=n>this</span> <span class=k>if</span> <span class=n>condition</span> <span class=n>is</span> <span class=n>not</span> <span class=mi>0</span>
+<span class=p>)(</span>
+    <span class=n>expand</span> <span class=n>to</span> <span class=n>this</span> <span class=n>otherwise</span>
+<span class=p>)</span>
+</pre></div>
+<p>Unlike a C if-else-statement, the condition will be evaluated in the
+preprocessor, before your code is even compiled. The usefulness of this will
+become more apparent later on.</p>
+<h3 id=pattern-matching>Pattern Matching</h3>
+<p>The key to our if-else statement is abusing CPP to perform <a href=http://en.wikipedia.org/wiki/Pattern_matching>pattern
+matching</a> like so:</p>
+<div class=codehilite><pre><span></span><span class=cp>#define IF_ELSE(condition) _IF_ ## condition</span>
+<span class=cp>#define _IF_1(...) __VA_ARGS__ _IF_1_ELSE</span>
+<span class=cp>#define _IF_0(...)             _IF_0_ELSE</span>
+
+<span class=cp>#define _IF_1_ELSE(...)</span>
+<span class=cp>#define _IF_0_ELSE(...) __VA_ARGS__</span>
+</pre></div>
+<p><a href=http://jhnet.co.uk/articles/cpp_magic/simple_if_else.txt>Download &amp; Try Me!</a> (Hint: <code>cpp -P filename.txt</code>)</p>
+<p>First notice that <code>IF_ELSE</code> takes a single argument: a condition. In our example
+above you can see that this is then followed by two parenthesised expressions
+corresponding to the true and false case for the condition respectively.</p>
+<p>Lets see how this works in practice by walking through the expansion of the <code>1</code>
+and <code>0</code> cases:</p>
+<ul>
+<li>
+<p>Condition is <code>1</code> case:</p>
+<ul>
+<li><code>IF_ELSE(1)(it was one)(it was zero)</code></li>
+<li><code>_IF_ ## 1 (it was one)(it was zero)</code></li>
+<li><code>_IF_1 (it was one)(it was zero)</code></li>
+<li><code>it was one _IF_1_ELSE (it was zero)</code></li>
+<li><code>it was one</code></li>
+</ul>
+</li>
+<li>
+<p>Condition is <code>0</code> case:</p>
+<ul>
+<li><code>IF_ELSE(0)(it was one)(it was zero)</code></li>
+<li><code>_IF_ ## 0 (it was one)(it was zero)</code></li>
+<li><code>_IF_0 (it was one)(it was zero)</code></li>
+<li><code>_IF_0_ELSE (it was zero)</code></li>
+<li><code>it was zero</code></li>
+</ul>
+</li>
+</ul>
+<p>The trick here is using the CPP concatenation operator (<code>##</code>) to concatenate
+<code>_IF_</code> and the condition argument. In this case we expect condition to be either
+<code>0</code> or <code>1</code> and so the result is either <code>_IF_1</code> or <code>_IF_0</code>. These two macros
+combine with the second set of brackets (the true clause) and either reproduce
+their arguments or swallow them respectively. They also produce a matching
+<code>_IF_1_ELSE</code> or <code>_IF_0_ELSE</code> macro which combines with the third set of
+brackets, swallowing or reproducing the arguments respectively.</p>
+<h3 id=cast-to-bool-and-negation>Cast to bool!! (and negation)</h3>
+<p>Our <code>IF_ELSE</code> is looking pretty good at this point but what if we write:</p>
+<div class=codehilite><pre><span></span><span class=n>IF_ELSE</span><span class=p>(</span><span class=mi>123</span><span class=p>)(</span><span class=n>non</span><span class=o>-</span><span class=n>zero</span><span class=p>)(</span><span class=n>zero</span><span class=p>)</span>
+</pre></div>
+<p><a href=http://jhnet.co.uk/articles/cpp_magic/simple_if_else_fail.txt>Download &amp; Try Me!</a></p>
+<p>In this case it expands to:</p>
+<div class=codehilite><pre><span></span><span class=n>_IF_123</span><span class=p>(</span><span class=n>non</span><span class=o>-</span><span class=n>zero</span><span class=p>)(</span><span class=n>zero</span><span class=p>)</span>
+</pre></div>
+<p>Unfortunately because <code>_IF_123</code> is not defined, the macro expansion stops
+here and we're stuck. What we need is a macro which expands to <code>0</code> when its
+argument is <code>0</code> and <code>1</code> in <em>any</em> other case. To do this we'll attempt to
+implement C's famous cast to bool "operator" <code>!!</code>. This "operator" works by
+first negating the value with <code>!</code> yielding either 0 or 1, negating this will
+then yield 0 if the original value was 0 and 1 otherwise. In order to do this
+with a macro we'll need to implement logical negation.</p>
+<p>Before we can implement negation we need a handful of simple macros which at
+first sight will seem a bit random but don't worry, we'll get there!
+The first is this guy:</p>
+<div class=codehilite><pre><span></span><span class=cp>#define SECOND(a, b, ...) b</span>
+</pre></div>
+<p><a href=http://jhnet.co.uk/articles/cpp_magic/1_simple_if_else_fail.txt>Download &amp; Try Me!</a></p>
+<p>This macro takes an two or more arguments and expands to the second argument.</p>
+<p>The second macro is a 'probing' macro <code>IS_PROBE</code>: it takes a single argument and
+expands to 1 if the argument is <code>PROBE()</code> and 0 for <em>any</em> other argument. The
+macro is implemented as follows:</p>
+<div class=codehilite><pre><span></span><span class=cp>#define IS_PROBE(...) SECOND(__VA_ARGS__, 0)</span>
+<span class=cp>#define PROBE() ~, 1</span>
+</pre></div>
+<p><a href=http://jhnet.co.uk/articles/cpp_magic/probe.txt>Download &amp; Try Me!</a></p>
+<p>The dirty secret to <code>IS_PROBE</code> is that it takes a variable number of arguments
+and yet we just said it only takes a <em>single</em> argument. If we do indeed give
+<code>IS_PROBE</code> a single argument, you'll notice that the <code>SECOND</code> macro will in turn
+expand to <code>0</code>. If we pass <code>PROBE()</code>, however, this expands to <code>~, 1</code> and as a
+result <code>SECOND(~, 1, 0)</code> will expand to <code>1</code>.</p>
+<p>The trick here is that we can always spot the <code>PROBE()</code> because it (secretly)
+expands to two arguments (the second of which is <code>1</code> while all other valid
+inputs expand to one input. The choice of <code>~</code> as a first argument is essentially
+arbitrary (since <code>SECOND</code> will always cause it to disappear). However this
+particular character is a popular convention since if a bug in your macros
+results in one sneaking out into the final expansion it frequently results in a
+syntax error in the compiler alerting you to the problem.</p>
+<p>Now, using the above we can write our negation macro using the above and a
+little pattern matching like so:</p>
+<div class=codehilite><pre><span></span><span class=cp>#define NOT(x) IS_PROBE(_NOT_ ## x)</span>
+<span class=cp>#define _NOT_0 PROBE()</span>
+</pre></div>
+<p><a href=http://jhnet.co.uk/articles/cpp_magic/not_quite.txt>Download &amp; Try Me!</a></p>
+<p>Here we pattern match the case where <code>NOT</code>'s argument is <code>0</code> and substitute it
+for the <code>PROBE()</code>. When the argument is non-zero we simply get something like
+<code>_NOT_some stuff here</code>. Since <code>IS_PROBE</code> will only result in a <code>1</code> if it gets
+the <code>PROBE()</code> and that only happens when we pass in <code>0</code>, we have a working
+negation!</p>
+<p>Here's a walk-through of the substitutions happening for both the zero and
+non-zero cases:</p>
+<ul>
+<li>Non-zero case:<ul>
+<li><code>NOT(not zero)</code></li>
+<li><code>IS_PROBE(_NOT_ ## not zero)</code></li>
+<li><code>IS_PROBE(_NOT_not zero)</code></li>
+<li><code>SECOND(_NOT_not zero, 0)</code></li>
+<li><code>0</code></li>
+</ul>
+</li>
+<li>Zero case:<ul>
+<li><code>NOT(0)</code></li>
+<li><code>IS_PROBE(_NOT_ ## 0)</code></li>
+<li><code>IS_PROBE(_NOT_0)</code></li>
+<li><code>IS_PROBE(PROBE())</code></li>
+<li><code>IS_PROBE(~, 1)</code></li>
+<li><code>SECOND(~, 1, 0)</code></li>
+<li><code>1</code></li>
+</ul>
+</li>
+</ul>
+<p>With our negation macro working we can trivially make a cast-to-bool macro:</p>
+<div class=codehilite><pre><span></span><span class=cp>#define BOOL(x) NOT(NOT(x))</span>
+</pre></div>
+<p><a href=http://jhnet.co.uk/articles/cpp_magic/bool_broken.txt>Download &amp; Try Me!</a></p>
+<p>Unfortunately, this doesn't work:</p>
+<div class=codehilite><pre><span></span><span class=n>BOOL</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
+<span class=n>BOOL</span><span class=p>(</span><span class=mi>123</span><span class=p>)</span>
+</pre></div>
+<p>Becomes:</p>
+<div class=codehilite><pre><span></span><span class=mi>0</span>
+<span class=mi>0</span>
+</pre></div>
+<p>This is all due to the slightly unusual rules surrounding the <code>##</code>
+(concatenation) operator. Typically, macro arguments are expanded before they
+are inserted into the macro body, however, if the argument is inserted next to a
+<code>##</code>, it will <em>not</em> be expanded. The result is as follows:</p>
+<ul>
+<li><code>BOOL(123)</code></li>
+<li><code>NOT(NOT(123))</code></li>
+<li><code>IS_PROBE(_NOT_ ## NOT(123))</code></li>
+<li><code>IS_PROBE(_NOT_NOT(123))</code></li>
+<li><code>SECOND(_NOT_NOT(123), 0)</code></li>
+<li><code>0</code></li>
+</ul>
+<p>We can force the expansion to take place by hiding the <code>##</code> using a macro as
+follows:</p>
+<div class=codehilite><pre><span></span><span class=cp>#define CAT(a,b) a ## b</span>
+</pre></div>
+<p>If we redefine <code>NOT</code> as follows:</p>
+<div class=codehilite><pre><span></span><span class=cp>#define NOT(x) IS_PROBE(CAT(_NOT_, x))</span>
+<span class=cp>#define _NOT_0 PROBE()</span>
+</pre></div>
+<p><a href=http://jhnet.co.uk/articles/cpp_magic/bool_working.txt>Download &amp; Try Me!</a></p>
+<p>This time, because the expansion of <code>NOT</code> does not (directly) contain a <code>##</code>
+near its argument, the arguments to <code>NOT</code> are macro expanded before insertion
+into the macro body. As a result, our double negation, and thus our <code>BOOL</code>
+macro, works:</p>
+<ul>
+<li><code>BOOL(123)</code></li>
+<li><code>NOT(NOT(123))</code></li>
+<li><code>NOT(IS_PROBE(CAT(_NOT_, 123)))</code></li>
+<li><code>NOT(IS_PROBE(_NOT_123))</code></li>
+<li><code>NOT(SECOND(_NOT_123, 0))</code></li>
+<li><code>NOT(0)</code></li>
+<li><code>IS_PROBE(CAT(_NOT_, 0))</code></li>
+<li><code>IS_PROBE(_NOT_0)</code></li>
+<li><code>IS_PROBE(PROBE())</code></li>
+<li><code>IS_PROBE(~, 1)</code></li>
+<li><code>SECOND(~, 1, 0)</code></li>
+<li><code>1</code></li>
+</ul>
+<p>Unfortunately, though, we hit a related problem when we stick this into our
+<code>IF_ELSE</code> macro:</p>
+<div class=codehilite><pre><span></span><span class=cp>#define IF_ELSE(condition) _IF_ ## BOOL(condition)</span>
+<span class=cp>#define _IF_1(...) __VA_ARGS__ _IF_1_ELSE</span>
+<span class=cp>#define _IF_0(...)             _IF_0_ELSE</span>
+
+<span class=cp>#define _IF_1_ELSE(...)</span>
+<span class=cp>#define _IF_0_ELSE(...) __VA_ARGS__</span>
+
+<span class=n>IF_ELSE</span><span class=p>(</span><span class=mi>123</span><span class=p>)(</span><span class=n>is</span> <span class=n>non</span> <span class=n>zero</span><span class=p>)(</span><span class=n>is</span> <span class=n>zero</span><span class=p>)</span>
+</pre></div>
+<p><a href=http://jhnet.co.uk/articles/cpp_magic/if_else_broken.txt>Download &amp; Try Me!</a></p>
+<p>Which produces:</p>
+<div class=codehilite><pre><span></span><span class=err>_IF_BOOL(123)(is non zero)(is zero)</span>
+</pre></div>
+<p>The concatenation is happening before our <code>BOOL</code> macro is expanded and of course
+<code>_IF_BOOL(123)</code> is not a macro and so it remains unexpanded. In order to force
+the <code>BOOL</code> macro to be expanded before the concatenation we need to do the
+following:</p>
+<div class=codehilite><pre><span></span><span class=cp>#define IF_ELSE(condition) _IF_ELSE(BOOL(condition))</span>
+<span class=cp>#define _IF_ELSE(condition) CAT(_IF_, condition)</span>
+
+<span class=cp>#define _IF_1(...) __VA_ARGS__ _IF_1_ELSE</span>
+<span class=cp>#define _IF_0(...)             _IF_0_ELSE</span>
+
+<span class=cp>#define _IF_1_ELSE(...)</span>
+<span class=cp>#define _IF_0_ELSE(...) __VA_ARGS__</span>
+</pre></div>
+<p><a href=http://jhnet.co.uk/articles/cpp_magic/if_else_working.txt>Download &amp; Try Me!</a></p>
+<p>We now have two layers of indirection between <code>IF_ELSE</code> and the concatenation.
+The expansion looks like this:</p>
+<ul>
+<li><code>IF_ELSE(123)(is non zero)(is zero)</code></li>
+<li><code>_IF_ELSE(BOOL(123))(is non zero)(is zero)</code></li>
+<li>(Expansion of <code>BOOL</code> not shown)</li>
+<li><code>_IF_ELSE(1)(is non zero)(is zero)</code></li>
+<li><code>CAT(_IF_, 1)(is non zero)(is zero)</code></li>
+<li><code>_IF_ ## 1(is non zero)(is zero)</code></li>
+<li><code>_IF_1(is non zero)(is zero)</code></li>
+<li><code>is non zero _IF_1_ELSE(is zero)</code></li>
+<li><code>is non zero</code></li>
+</ul>
+<p>Since <code>IF_ELSE</code> ensures that <code>BOOL(condition)</code> is expanded when it is an
+argument to <code>_IF_ELSE</code>, the <code>BOOL</code> macro is fully expanded to <code>1</code> when it
+reaches the <code>CAT</code> macro. Since <code>CAT</code> uses <code>##</code>, its inputs would not be expanded
+and so this step is critical. Also note that if we didn't use the <code>CAT</code> macro
+and instead just used <code>##</code>, <code>_IF_ELSE</code>'s arguments would not get expanded and so
+we'd hit the problem we saw before.</p>
+<p>So after all that, at long last, we now have a working <code>IF_ELSE</code> macro!</p>
+<h2 id=iterators>Iterators</h2>
+<p>Iterators are a tricky beast in CPP because recursive macros are explicitly
+blocked. For example if we write:</p>
+<div class=codehilite><pre><span></span><span class=cp>#define RECURSIVE() I am RECURSIVE()</span>
+</pre></div>
+<p><code>RECURSIVE()</code> rather boringly expands to</p>
+<div class=codehilite><pre><span></span><span class=n>I</span> <span class=n>am</span> <span class=n>RECURSIVE</span><span class=p>()</span>
+</pre></div>
+<p>What happens is that when <code>RECURSIVE()</code> is expanded, if <code>RECURSIVE</code> appears in
+its expansion it is 'painted blue' (macro language jargon) which prevents it
+ever being expanded as a macro. Clearly we can't rely on simple recursion to
+implement. One could of course exhaustively define <mathjax>$n$</mathjax> macros for iterating up
+to <mathjax>$n$</mathjax> times but this would be tiresome and extremely limiting. </p>
+<p>Luckily with some more detailed knowledge of how CPP expands macros we can
+create an iterator which can iterate <mathjax>$O(2^n)$</mathjax> times with only <mathjax>$O(n)$</mathjax> macro
+definitions.</p>
+<h3 id=forcing-cpp-to-make-multiple-passes>Forcing CPP to make multiple passes</h3>
+<p>Lets start by looking at the following snippet:</p>
+<div class=codehilite><pre><span></span><span class=cp>#define EMPTY()</span>
+<span class=cp>#define A(n) I like the number n</span>
+
+<span class=n>A</span> <span class=p>(</span><span class=mi>123</span><span class=p>)</span>
+<span class=n>A</span> <span class=n>EMPTY</span><span class=p>()</span> <span class=p>(</span><span class=mi>123</span><span class=p>)</span>
+</pre></div>
+<p><a href=http://jhnet.co.uk/articles/cpp_magic/empty_example.txt>Download &amp; Try Me!</a></p>
+<p>This expands to:</p>
+<div class=codehilite><pre><span></span><span class=n>I</span> <span class=n>like</span> <span class=n>the</span> <span class=n>number</span> <span class=mi>123</span>
+<span class=n>A</span> <span class=p>(</span><span class=mi>123</span><span class=p>)</span>
+</pre></div>
+<p>This might seem a little odd since we can see that <code>A (123)</code> should have be
+expanded but hasn't been. Lets look at the process CPP goes through when
+expanding the last line of the example:</p>
+<ul>
+<li>
+<p>CPP sees the token <code>A</code> but since it isn't followed by a set of brackets, it is
+ not considered a macro.</p>
+<div class=codehilite><pre><span></span><span class=err>A EMPTY() (123)</span>
+<span class=err>^</span>
+</pre></div>
+</li>
+<li>
+<p>Next it sees <code>EMPTY()</code></p>
+<div class=codehilite><pre><span></span><span class=err>A EMPTY() (123)</span>
+<span class=err>  ^</span>
+</pre></div>
+</li>
+<li>
+<p>This is substituted according to our <code>#define</code>:</p>
+<div class=codehilite><pre><span></span><span class=err>A (123)</span>
+<span class=err>  ^</span>
+</pre></div>
+</li>
+<li>
+<p>At this point the macro expander sees <code>(123)</code> which cannot be expanded and so
+ expansion completes:</p>
+<div class=codehilite><pre><span></span><span class=err>A (123)</span>
+<span class=err>       ^</span>
+</pre></div>
+</li>
+</ul>
+<p>Clearly, an second expansion pass is required. We can force this to happen by
+making a macro like so:</p>
+<div class=codehilite><pre><span></span><span class=cp>#define EVAL1(...) __VA_ARGS__</span>
+
+<span class=n>EVAL1</span><span class=p>(</span><span class=n>A</span> <span class=n>EMPTY</span><span class=p>()</span> <span class=p>(</span><span class=mi>123</span><span class=p>))</span>
+</pre></div>
+<p><a href=http://jhnet.co.uk/articles/cpp_magic/eval1_example.txt>Download &amp; Try Me!</a></p>
+<p>This expands to:</p>
+<div class=codehilite><pre><span></span><span class=n>I</span> <span class=n>like</span> <span class=n>the</span> <span class=n>number</span> <span class=mi>123</span>
+</pre></div>
+<p>The reason this works is that when CPP encounters a function-style macro, <a href=https://gcc.gnu.org/onlinedocs/cpp/Argument-Prescan.html#Argument-Prescan>it
+recursively expands the macro's arguments before substituting the macro's body
+and expanding
+that</a>.</p>
+<p>So, with that in mind, lets watch what happens in detail:</p>
+<ul>
+<li>
+<p>CPP sees the token <code>EVAL1</code> followed by a set of brackets. This corresponds
+ with a function-style macro.</p>
+<div class=codehilite><pre><span></span><span class=err>EVAL1(A EMPTY() (123))</span>
+<span class=err>^</span>
+</pre></div>
+<ul>
+<li>
+<p>CPP now takes the arguments and separately expands these. It sees the token
+ <code>A</code> but since it isn't followed by a set of brackets, it is not considered a
+ macro.</p>
+<div class=codehilite><pre><span></span><span class=err>A EMPTY() (123)</span>
+<span class=err>^</span>
+</pre></div>
+</li>
+<li>
+<p>Next it sees <code>EMPTY()</code></p>
+<div class=codehilite><pre><span></span><span class=err>A EMPTY() (123)</span>
+<span class=err>  ^</span>
+</pre></div>
+<ul>
+<li>CPP takes the arguments and exppands these, which is rather boring since
+ there are no arguments:<div class=codehilite><pre><span></span><span class=err>^</span>
+</pre></div>
+</li>
+</ul>
+</li>
+<li>
+<p>The equally empty body of <code>EMPTY()</code> is then substituted in and expansion
+ continues.</p>
+<div class=codehilite><pre><span></span><span class=err>A (123)</span>
+<span class=err>  ^</span>
+</pre></div>
+</li>
+<li>
+<p>At this point the macro expander sees <code>(123)</code> which cannot be expanded and so
+ expansion completes.</p>
+<div class=codehilite><pre><span></span><span class=err>A (123)</span>
+<span class=err>       ^</span>
+</pre></div>
+</li>
+</ul>
+</li>
+<li>
+<p>The arguments to <code>EVAL1</code>, having been expanded, are now substituted into the
+ macro body of <code>EVAL1</code> and the macro expander continues from the start of
+ <code>EVAL1</code>'s expansion. It sees <code>A (123)</code> and expands this.</p>
+<div class=codehilite><pre><span></span><span class=err>A (123)</span>
+<span class=err>^</span>
+</pre></div>
+</li>
+<li>
+<p>This leaves us with the following:</p>
+<div class=codehilite><pre><span></span><span class=err>I like the number 123</span>
+<span class=err>^</span>
+</pre></div>
+</li>
+<li>
+<p>A pass of the macro expander will now find no further substitutions and so the
+ expansion completes.</p>
+<div class=codehilite><pre><span></span><span class=err>I like the number 123</span>
+<span class=err>                     ^</span>
+</pre></div>
+</li>
+</ul>
+<p>OK, so clearly using this trick we can force the macro expander to make
+additional passes when expanding macros. In fact, we can cause the macro
+expander to make <em>many</em> additional passes:</p>
+<div class=codehilite><pre><span></span><span class=cp>#define EVAL(...) EVAL1024(__VA_ARGS__)</span>
+<span class=cp>#define EVAL1024(...) EVAL512(EVAL512(__VA_ARGS__))</span>
+<span class=cp>#define EVAL512(...) EVAL256(EVAL256(__VA_ARGS__))</span>
+<span class=cp>#define EVAL256(...) EVAL128(EVAL128(__VA_ARGS__))</span>
+<span class=cp>#define EVAL128(...) EVAL64(EVAL64(__VA_ARGS__))</span>
+<span class=cp>#define EVAL64(...) EVAL32(EVAL32(__VA_ARGS__))</span>
+<span class=cp>#define EVAL32(...) EVAL16(EVAL16(__VA_ARGS__))</span>
+<span class=cp>#define EVAL16(...) EVAL8(EVAL8(__VA_ARGS__))</span>
+<span class=cp>#define EVAL8(...) EVAL4(EVAL4(__VA_ARGS__))</span>
+<span class=cp>#define EVAL4(...) EVAL2(EVAL2(__VA_ARGS__))</span>
+<span class=cp>#define EVAL2(...) EVAL1(EVAL1(__VA_ARGS__))</span>
+<span class=cp>#define EVAL1(...) __VA_ARGS__</span>
+</pre></div>
+<p>Before we move on, lets define the following macro based on what we've just
+learnt:</p>
+<div class=codehilite><pre><span></span><span class=cp>#define DEFER1(m) m EMPTY()</span>
+</pre></div>
+<p>This macro can be used to defer the expansion of another macro to the next
+expansion pass as follows:</p>
+<div class=codehilite><pre><span></span><span class=cp>#define B(n) n is my favourite!</span>
+<span class=n>DEFER1</span><span class=p>(</span><span class=n>B</span><span class=p>)(</span><span class=mi>321</span><span class=p>)</span>
+</pre></div>
+<p>Which expands to:</p>
+<div class=codehilite><pre><span></span><span class=n>B</span> <span class=p>(</span><span class=mi>321</span><span class=p>)</span>
+</pre></div>
+<p>Requiring a further expansion pass to become:</p>
+<div class=codehilite><pre><span></span><span class=mi>321</span> <span class=n>is</span> <span class=n>my</span> <span class=n>favourite</span><span class=o>!</span>
+</pre></div>
+<h3 id=turning-multiple-expansion-passes-into-recursion>Turning multiple expansion passes into recursion</h3>
+<p>As this subheading suggests, its time to try and implement recursion: one
+possible basis for any form of iteration. Previously we stated that we cannot
+allow a macro to expand to itself because it will get painted blue and thus
+never get expanded. However, if the recursive expansion to takes place in a
+separate macro expansion pass, CPP won't realise recursion is taking place and
+thus we can get away with it.</p>
+<p>Take a look at the following macro:</p>
+<div class=codehilite><pre><span></span><span class=cp>#define RECURSE() I am recursive, look: DEFER1(_RECURSE)()()</span>
+<span class=cp>#define _RECURSE() RECURSE</span>
+
+<span class=n>RECURSE</span><span class=p>()</span>
+</pre></div>
+<p><a href=http://jhnet.co.uk/articles/cpp_magic/unbounded_recursion.txt>Download &amp; Try Me!</a></p>
+<p>It will expand in a single pass to:</p>
+<div class=codehilite><pre><span></span><span class=n>I</span> <span class=n>am</span> <span class=n>recursive</span><span class=p>,</span> <span class=nl>look</span><span class=p>:</span> <span class=n>_RECURSE</span> <span class=p>()()</span>
+</pre></div>
+<p>Note that we didn't expand to the <code>RECURSE()</code> macro so everything is fine so
+far.</p>
+<p>If we force a second macro expansion, for example:</p>
+<div class=codehilite><pre><span></span><span class=n>EVAL1</span><span class=p>(</span><span class=n>RECURSE</span><span class=p>())</span>
+</pre></div>
+<p>We get:</p>
+<div class=codehilite><pre><span></span><span class=n>I</span> <span class=n>am</span> <span class=n>recursive</span><span class=p>,</span> <span class=nl>look</span><span class=p>:</span> <span class=n>I</span> <span class=n>am</span> <span class=n>recursive</span><span class=p>,</span> <span class=nl>look</span><span class=p>:</span> <span class=n>_RECURSE</span> <span class=p>()()</span>
+</pre></div>
+<p>In this second pass, the macro expander expands <code>_RECURSE ()</code> giving:</p>
+<div class=codehilite><pre><span></span><span class=n>I</span> <span class=n>am</span> <span class=n>recursive</span><span class=p>,</span> <span class=nl>look</span><span class=p>:</span> <span class=n>RECURSE</span> <span class=p>()</span>
+</pre></div>
+<p>It is critical that <code>_RECURSE</code> expands to <code>RECURSE</code> and not <code>RECURSE()</code> since
+the former cannot be expanded in isolation since <code>RECURSE</code> is a function-style
+macro. If we used the latter, <code>RECURSE</code> would expand to contain <code>_RECURSE</code> which
+would then be painted blue and no number of evaluations will cause it to expand.</p>
+<p>The expansion of <code>_RECURSE()</code>, <code>RECURSE</code>, combines with the extra pair of
+brackets which follows which, completes a second iteration of our recursion.</p>
+<p>Each additional evaluation results in an iteration of the recursive macro.
+Obviously execution is not <em>truly</em> recursive in that the recursion depth is
+limited to the number of evaluations which in turn is bounded. However, since
+the number of evaluations can be trivially made very large, for any practical
+purpose the recursion depth should be sufficient.</p>
+<h3 id=turning-recursion-into-an-iterator>Turning recursion into an iterator</h3>
+<p>Finally, lets do what we set out to do and implement a <code>MAP</code> macro which applies
+the specified macro to every element of a list of arguments. Clearly we can
+make a start based on our recursion example:</p>
+<div class=codehilite><pre><span></span><span class=cp>#define MAP(m, first, ...) m(first) DEFER1(_MAP)()(m, __VA_ARGS__)</span>
+<span class=cp>#define _MAP() MAP</span>
+</pre></div>
+<p>Our <code>MAP</code> macro evaluates the passed macro passing in the first argument. We
+then recursively call ourselves passing the supplied macro and remaining
+arguments. For example:</p>
+<div class=codehilite><pre><span></span><span class=cp>#define GREET(x) Hello, x!</span>
+<span class=n>EVAL8</span><span class=p>(</span><span class=n>MAP</span><span class=p>(</span><span class=n>GREET</span><span class=p>,</span> <span class=n>Mum</span><span class=p>,</span> <span class=n>Dad</span><span class=p>,</span> <span class=n>Adam</span><span class=p>,</span> <span class=n>Joe</span><span class=p>))</span>
+</pre></div>
+<p><a href=http://jhnet.co.uk/articles/cpp_magic/unbounded_map.txt>Download &amp; Try Me!</a></p>
+<p>And it largely works:</p>
+<div class=codehilite><pre><span></span><span class=err>Hello, Mum! Hello, Dad! Hello, Adam! Hello, Joe! Hello, ! Hello, ! Hello, ! Hello, ! Hello, ! Hello, ! Hello, ! Hello, ! Hello, ! Hello, ! Hello, ! Hello, ! _MAP ()(GREET, )</span>
+</pre></div>
+<p>But alas, our recursion never terminates. We must come up with a macro which can
+detect when there are no more arguments and terminate the recursion. We can do
+this as follows:</p>
+<div class=codehilite><pre><span></span><span class=cp>#define FIRST(a, ...) a</span>
+
+<span class=cp>#define HAS_ARGS(...) BOOL(FIRST(_END_OF_ARGUMENTS_ __VA_ARGS__)())</span>
+<span class=cp>#define _END_OF_ARGUMENTS_() 0</span>
+</pre></div>
+<p><a href=http://jhnet.co.uk/articles/cpp_magic/has_args.txt>Download &amp; Try Me!</a></p>
+<p>When <code>HAS_ARGS</code> is passed no arguments, expansion proceeds as follows:</p>
+<ul>
+<li><code>HAS_ARGS()</code></li>
+<li><code>BOOL(FIRST(_END_OF_ARGUMENTS_)())</code></li>
+<li><code>BOOL(_END_OF_ARGUMENTS_())</code></li>
+<li><code>BOOL(0)</code></li>
+<li><code>0</code></li>
+</ul>
+<p>However, when <code>HAS_ARGS</code> has any number of arguments:</p>
+<ul>
+<li><code>HAS_ARGS(some, arguments, here)</code></li>
+<li><code>BOOL(FIRST(_END_OF_ARGUMENTS_ some, arguments, here)())</code></li>
+<li><code>BOOL(_END_OF_ARGUMENTS_ some())</code></li>
+<li><code>1</code></li>
+</ul>
+<p>The key trick is that the first argument passed to <code>HAS_ARGS</code> is placed between
+<code>_END_OF_ARGUMENTS_</code> and the brackets that would cause it to expand to <code>0</code>. As a
+result, the <code>BOOL</code> macro's argument will be non-zero and thus evaluate to 1.</p>
+<p>Now we can use <code>HAS_ARGS</code> along with our <code>IF_ELSE</code> macro to make our <code>MAP</code>
+terminate cleanly:</p>
+<div class=codehilite><pre><span></span><span class=cp>#define MAP(m, first, ...)           \</span>
+<span class=cp>  m(first)                           \</span>
+<span class=cp>  IF_ELSE(HAS_ARGS(__VA_ARGS__))(    \</span>
+<span class=cp>    DEFER1(_MAP)()(m, __VA_ARGS__)   \</span>
+<span class=cp>  )(                                 \</span>
+<span class=cp>    </span><span class=cm>/* Do nothing, just terminate */</span><span class=cp> \</span>
+<span class=cp>  )</span>
+<span class=cp>#define _MAP() MAP</span>
+</pre></div>
+<p><a href=http://jhnet.co.uk/articles/cpp_magic/map_broken.txt>Download &amp; Try Me!</a></p>
+<p>Lets try it out:</p>
+<div class=codehilite><pre><span></span><span class=n>EVAL</span><span class=p>(</span><span class=n>MAP</span><span class=p>(</span><span class=n>GREET</span><span class=p>,</span> <span class=n>Mum</span><span class=p>,</span> <span class=n>Dad</span><span class=p>,</span> <span class=n>Adam</span><span class=p>,</span> <span class=n>Joe</span><span class=p>))</span>
+</pre></div>
+<p>And lo and behold:</p>
+<div class=codehilite><pre><span></span><span class=n>Hello</span><span class=p>,</span> <span class=n>Mum</span><span class=o>!</span> <span class=n>MAP</span><span class=p>(</span><span class=n>GREET</span><span class=p>,</span> <span class=n>Dad</span><span class=p>,</span> <span class=n>Adam</span><span class=p>,</span> <span class=n>Joe</span><span class=p>)</span>
+</pre></div>
+<p>Oh no! Now it doesn't recurse! You'll remember that earlier we prevented <code>_MAP</code>
+from being expanded in a single pass (using <code>DEFER1</code>) in order to hide the
+recursive expansion from CPP. What's happened here is that our <code>DEFER1</code> has been
+moved into the true-clause of our <code>IF_ELSE</code> statement which becomes an argument
+to a macro and, as a result, receives an additional pass of the macro expander
+and so <code>_MAP()</code> gets expanded to <code>MAP</code> which in turn gets painted blue, killing
+the recursion.</p>
+<p>To get around this we need to defer the expansion of <code>_MAP</code> for <em>two</em> passes of
+macro expansion. We can extend our <code>DEFER1</code> macro like so to make version which
+defer for successively greater numbers of expansion:</p>
+<div class=codehilite><pre><span></span><span class=cp>#define DEFER2(m) m EMPTY EMPTY()()</span>
+<span class=cp>#define DEFER3(m) m EMPTY EMPTY EMPTY()()()</span>
+<span class=cp>#define DEFER4(m) m EMPTY EMPTY EMPTY EMPTY()()()()</span>
+<span class=c1>// ...</span>
+</pre></div>
+<p>In this case we simply need to defer for two expansion passes so <code>DEFER2</code> is
+sufficient:</p>
+<div class=codehilite><pre><span></span><span class=cp>#define MAP(m, first, ...)           \</span>
+<span class=cp>  m(first)                           \</span>
+<span class=cp>  IF_ELSE(HAS_ARGS(__VA_ARGS__))(    \</span>
+<span class=cp>    DEFER2(_MAP)()(m, __VA_ARGS__)   \</span>
+<span class=cp>  )(                                 \</span>
+<span class=cp>    </span><span class=cm>/* Do nothing, just terminate */</span><span class=cp> \</span>
+<span class=cp>  )</span>
+<span class=cp>#define _MAP() MAP</span>
+</pre></div>
+<p><a href=http://jhnet.co.uk/articles/cpp_magic/map_working.txt>Download &amp; Try Me!</a></p>
+<p>And so, at long last:</p>
+<div class=codehilite><pre><span></span><span class=n>EVAL</span><span class=p>(</span><span class=n>MAP</span><span class=p>(</span><span class=n>GREET</span><span class=p>,</span> <span class=n>Mum</span><span class=p>,</span> <span class=n>Dad</span><span class=p>,</span> <span class=n>Adam</span><span class=p>,</span> <span class=n>Joe</span><span class=p>))</span>
+</pre></div>
+<p>Expands to:</p>
+<div class=codehilite><pre><span></span><span class=err>Hello, Mum! Hello, Dad! Hello, Adam! Hello, Joe!</span>
+</pre></div>
+<p>And with that, congratulations, you've just implemented iteration in the
+C-preprocessor!</p>
+<h2 id=learning-more>Learning More</h2>
+<p>The <a href=https://gcc.gnu.org/onlinedocs/cpp/>CPP manual</a> is, of course, a good
+place for detailed and precise information on CPP's behaviour though it doesn't
+cover interesting abuses such as those above.</p>
+<p>My own first introduction to CPP abuse came from <a href=https://github.com/pfultz2/Cloak/wiki/C-Preprocessor-tricks,-tips,-and-idioms>pfultz2's excellent
+introduction to the matter</a>.</p>
+<p>If you're interested in a non-trivial application of these techniques, take a
+look at my own 'EZSHET' library which can be <a href=https://github.com/18sg/uSHET>found on
+GitHub</a> as part of uSHET, a home automation
+library. EZSHET generates C code to unpack and type-check arbitrary JSON strings
+at compile time using some of these tricks. You can start with
+<a href=https://github.com/18sg/uSHET/blob/master/lib/cpp_magic.h><code>lib/cpp_magic.h</code></a>
+for the generic CPP abuse (from which much of this article is taken). You should
+then move on to <a href=https://github.com/18sg/uSHET/blob/master/lib/ezshet_internal.h>the
+innards</a> to
+discover how this is used to generate code <a href=https://github.com/18sg/uSHET/blob/master/doc/ezshet_tutorial.md#appendix-h-peeking-behind-the-scenes>like that listed in the appendix of
+the EZSHET
+tutorial</a>.</p>
+<p>Another popular place to see abusive CPP macros in action is <a href=http://www.boost.org/doc/libs/1_57_0/libs/preprocessor/doc/index.html>Boost's CPP
+library</a>,
+built for the days when template meta-programming wasn't hard-core enough to
+stand alone.</p>
+ </div>
+</div>
+ </div>
+</div>
+<div class=footer>
+ <div class=container>
+ <hr>
+ <p class="text-center muted">
+ <small>
+ ©
+ 2021 Jonathan Heathcote
+ 
+ </small>
+ </p>
+ </div>
+</div>
+ 
+ 
+ 
+ 
